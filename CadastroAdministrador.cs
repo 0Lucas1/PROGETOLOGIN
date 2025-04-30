@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PROGETOLOGIN;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,11 +11,18 @@ using System.Windows.Forms;
 
 namespace ProjetoSGE
 {
-    public partial class CadastroAdministrador: Form
+    public partial class CadastroAdministrador : Form
     {
         public CadastroAdministrador()
         {
             InitializeComponent();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            LOGIN login = new LOGIN();
+            login.Show();
+            this.Hide();
         }
     }
 }

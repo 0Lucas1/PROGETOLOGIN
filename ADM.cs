@@ -13,6 +13,7 @@ namespace PROGETOLOGIN
 {
     public partial class ADM : Form
     {
+        private bool senhaVisivel = true;
         public ADM()
         {
             InitializeComponent();
@@ -47,6 +48,22 @@ namespace PROGETOLOGIN
             LOGIN login = new LOGIN();
             login.Show();
             this.Hide();
+        }
+
+        private void btnmostra_Click(object sender, EventArgs e)
+        {
+            if (senhaVisivel)
+            {
+                TXTSENHA.PasswordChar = '*';
+                btnmostra.Text = "Mostrar";
+                senhaVisivel = false;
+            }
+            else
+            {
+                TXTSENHA.PasswordChar = '\0';
+                btnmostra.Text = "Esconder";
+                senhaVisivel = true;
+            }
         }
     }
 }

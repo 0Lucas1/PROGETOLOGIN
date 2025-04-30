@@ -29,13 +29,14 @@
         private void InitializeComponent()
         {
             TXTADM = new TextBox();
-            TXTSENHA = new TextBox();
             label1 = new Label();
             label2 = new Label();
             BTNAcessar = new Button();
             lblMensagem = new Label();
             lbltxt = new Label();
             button1 = new Button();
+            TXTSENHA = new TextBox();
+            btnmostra = new Button();
             SuspendLayout();
             // 
             // TXTADM
@@ -45,17 +46,11 @@
             TXTADM.Size = new Size(175, 23);
             TXTADM.TabIndex = 0;
             // 
-            // TXTSENHA
-            // 
-            TXTSENHA.Location = new Point(251, 151);
-            TXTSENHA.Name = "TXTSENHA";
-            TXTSENHA.Size = new Size(175, 23);
-            TXTSENHA.TabIndex = 1;
-            // 
             // label1
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.ForeColor = Color.FromArgb(255, 128, 0);
             label1.Location = new Point(184, 154);
             label1.Name = "label1";
             label1.Size = new Size(52, 15);
@@ -66,6 +61,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label2.ForeColor = Color.FromArgb(255, 128, 0);
             label2.Location = new Point(128, 90);
             label2.Name = "label2";
             label2.Size = new Size(117, 15);
@@ -74,12 +70,14 @@
             // 
             // BTNAcessar
             // 
+            BTNAcessar.BackColor = Color.FromArgb(255, 128, 0);
+            BTNAcessar.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             BTNAcessar.Location = new Point(272, 212);
             BTNAcessar.Name = "BTNAcessar";
             BTNAcessar.Size = new Size(128, 23);
             BTNAcessar.TabIndex = 4;
             BTNAcessar.Text = "ACESSAR";
-            BTNAcessar.UseVisualStyleBackColor = true;
+            BTNAcessar.UseVisualStyleBackColor = false;
             BTNAcessar.Click += BTNAcessar_Click;
             // 
             // lblMensagem
@@ -112,11 +110,32 @@
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
+            // TXTSENHA
+            // 
+            TXTSENHA.Location = new Point(251, 151);
+            TXTSENHA.Name = "TXTSENHA";
+            TXTSENHA.Size = new Size(175, 23);
+            TXTSENHA.TabIndex = 1;
+            // 
+            // btnmostra
+            // 
+            btnmostra.BackColor = Color.FromArgb(255, 128, 0);
+            btnmostra.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnmostra.Location = new Point(446, 151);
+            btnmostra.Name = "btnmostra";
+            btnmostra.Size = new Size(96, 23);
+            btnmostra.TabIndex = 8;
+            btnmostra.Text = "Mostrar Senha";
+            btnmostra.UseVisualStyleBackColor = false;
+            btnmostra.Click += btnmostra_Click;
+            // 
             // ADM
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.ActiveCaptionText;
             ClientSize = new Size(626, 284);
+            Controls.Add(btnmostra);
             Controls.Add(button1);
             Controls.Add(lbltxt);
             Controls.Add(lblMensagem);
@@ -137,12 +156,13 @@
         #endregion
 
         private TextBox TXTADM;
-        private TextBox TXTSENHA;
         private Label label1;
         private Label label2;
         private Button BTNAcessar;
         private Label lblMensagem;
         private Label lbltxt;
         private Button button1;
+        private TextBox TXTSENHA;
+        private Button btnmostra;
     }
 }

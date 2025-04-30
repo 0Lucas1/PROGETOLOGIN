@@ -36,6 +36,7 @@
             txtSenha = new TextBox();
             txtemail = new TextBox();
             btnCadastrar = new Button();
+            button1 = new Button();
             SuspendLayout();
             // 
             // label4
@@ -56,9 +57,9 @@
             label1.ForeColor = Color.FromArgb(255, 128, 0);
             label1.Location = new Point(168, 137);
             label1.Name = "label1";
-            label1.Size = new Size(72, 19);
+            label1.Size = new Size(67, 19);
             label1.TabIndex = 9;
-            label1.Text = "Email :";
+            label1.Text = "Nome :";
             // 
             // label2
             // 
@@ -118,12 +119,24 @@
             btnCadastrar.Text = "Cadastrar";
             btnCadastrar.UseVisualStyleBackColor = false;
             // 
+            // button1
+            // 
+            button1.Font = new Font("Arial", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button1.Location = new Point(731, 12);
+            button1.Name = "button1";
+            button1.Size = new Size(57, 25);
+            button1.TabIndex = 16;
+            button1.Text = "Voltar";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
             // CadastroAdministrador
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaptionText;
             ClientSize = new Size(800, 450);
+            Controls.Add(button1);
             Controls.Add(btnCadastrar);
             Controls.Add(txtCSenha);
             Controls.Add(txtSenha);
@@ -132,7 +145,10 @@
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(label4);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MinimizeBox = false;
             Name = "CadastroAdministrador";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "CadastroAdministrador";
             ResumeLayout(false);
             PerformLayout();
@@ -148,5 +164,6 @@
         private TextBox txtSenha;
         private TextBox txtemail;
         private Button btnCadastrar;
+        private Button button1;
     }
 }

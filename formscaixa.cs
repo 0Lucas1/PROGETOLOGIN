@@ -22,5 +22,22 @@ namespace PROGETOLOGIN
             Relatório relatorio = new Relatório();
             relatorio.ShowDialog();
         }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            LOGIN login = new LOGIN();
+            login.Show();
+            this.Hide();
+        }
     }
 }

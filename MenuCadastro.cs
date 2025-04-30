@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PROGETOLOGIN;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,11 +11,25 @@ using System.Windows.Forms;
 
 namespace ProjetoSGE
 {
-    public partial class MenuCadastro: Form
+    public partial class MenuCadastro : Form
     {
         public MenuCadastro()
         {
             InitializeComponent();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            FormsCadastrar cadastro = new FormsCadastrar();
+            cadastro.Show();
+            this.Hide();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            CadastroAdministrador cadastroAdministrador = new CadastroAdministrador();
+            cadastroAdministrador.Show();
+            this.Hide();
         }
     }
 }

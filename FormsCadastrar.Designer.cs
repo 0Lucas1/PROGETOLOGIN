@@ -36,6 +36,7 @@
             label3 = new Label();
             btnCadastrar = new Button();
             label4 = new Label();
+            button1 = new Button();
             SuspendLayout();
             // 
             // txtemail
@@ -68,9 +69,9 @@
             label1.ForeColor = Color.FromArgb(255, 128, 0);
             label1.Location = new Point(211, 88);
             label1.Name = "label1";
-            label1.Size = new Size(72, 19);
+            label1.Size = new Size(67, 19);
             label1.TabIndex = 3;
-            label1.Text = "Email :";
+            label1.Text = "Nome :";
             // 
             // label2
             // 
@@ -119,12 +120,24 @@
             label4.TabIndex = 7;
             label4.Text = "CADASTRO USUÁRIO";
             // 
+            // button1
+            // 
+            button1.Font = new Font("Arial", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button1.Location = new Point(731, 12);
+            button1.Name = "button1";
+            button1.Size = new Size(57, 25);
+            button1.TabIndex = 8;
+            button1.Text = "Voltar";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
             // FormsCadastrar
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Black;
             ClientSize = new Size(800, 450);
+            Controls.Add(button1);
             Controls.Add(label4);
             Controls.Add(btnCadastrar);
             Controls.Add(label3);
@@ -152,5 +165,6 @@
         private Label label3;
         private Button btnCadastrar;
         private Label label4;
+        private Button button1;
     }
 }

@@ -34,12 +34,12 @@ namespace PROGETOLOGIN
                 return;
             }
             string senhaHash = Criptografia.GerarHash(senha);
-            using (var  conexao = Conexao.Obterconexao())
+            using (var conexao = Conexao.Obterconexao())
             {
                 string query = "INSERT INTO usuarios(email,senha) VALUES (@email,@senha)";
-                MySqlCommand cmd = new MySqlCommand(query,conexao);
-                cmd.Parameters.AddWithValue("@email",email);
-                cmd.Parameters.AddWithValue("@senha",senhaHash);
+                MySqlCommand cmd = new MySqlCommand(query, conexao);
+                cmd.Parameters.AddWithValue("@email", email);
+                cmd.Parameters.AddWithValue("@senha", senhaHash);
 
                 try
                 {
@@ -60,6 +60,13 @@ namespace PROGETOLOGIN
                 }
             }
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            LOGIN login = new LOGIN();
+            login.Show();
+            this.Hide();
         }
     }
 }
