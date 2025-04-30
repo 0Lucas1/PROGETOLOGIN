@@ -14,8 +14,13 @@ namespace PROGETOLOGIN
 
         private void BTNCADASTRAR_Click(object sender, EventArgs e)
         {
-            FormsCadastrar CADASTRAR = new FormsCadastrar();
-            CADASTRAR.ShowDialog();
+
+          
+            ADM adm = new ADM();
+            adm.ShowDialog();
+            this.Hide();
+               
+      
         }
 
         private void BTNACESSAR_Click(object sender, EventArgs e)
