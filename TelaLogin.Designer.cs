@@ -28,38 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label1 = new Label();
-            label2 = new Label();
             TXTEMAIL = new TextBox();
             TXTSENHA = new TextBox();
             BTNACESSAR = new Button();
             BTNCADASTRAR = new Button();
             btnmostra = new Button();
+            label1 = new Label();
+            label2 = new Label();
             SuspendLayout();
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.BackColor = Color.Black;
-            label1.BorderStyle = BorderStyle.Fixed3D;
-            label1.Font = new Font("Bernard MT Condensed", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.ForeColor = Color.FromArgb(255, 128, 0);
-            label1.Location = new Point(198, 128);
-            label1.Name = "label1";
-            label1.Size = new Size(79, 21);
-            label1.TabIndex = 0;
-            label1.Text = "USUÁRIO: ";
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Bernard MT Condensed", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.ForeColor = Color.FromArgb(255, 128, 0);
-            label2.Location = new Point(216, 188);
-            label2.Name = "label2";
-            label2.Size = new Size(61, 19);
-            label2.TabIndex = 1;
-            label2.Text = "SENHA: ";
             // 
             // TXTEMAIL
             // 
@@ -111,19 +87,41 @@
             btnmostra.UseVisualStyleBackColor = true;
             btnmostra.Click += btnmostra_Click;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Bernard MT Condensed", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.ForeColor = Color.FromArgb(255, 128, 0);
+            label1.Location = new Point(216, 193);
+            label1.Name = "label1";
+            label1.Size = new Size(61, 19);
+            label1.TabIndex = 7;
+            label1.Text = "SENHA: ";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Bernard MT Condensed", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label2.ForeColor = Color.FromArgb(255, 128, 0);
+            label2.Location = new Point(200, 129);
+            label2.Name = "label2";
+            label2.Size = new Size(77, 19);
+            label2.TabIndex = 8;
+            label2.Text = "USUÁRIO: ";
+            // 
             // LOGIN
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Black;
             ClientSize = new Size(800, 450);
+            Controls.Add(label2);
+            Controls.Add(label1);
             Controls.Add(btnmostra);
             Controls.Add(BTNCADASTRAR);
             Controls.Add(BTNACESSAR);
             Controls.Add(TXTSENHA);
             Controls.Add(TXTEMAIL);
-            Controls.Add(label2);
-            Controls.Add(label1);
             ForeColor = SystemColors.ControlText;
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
@@ -135,13 +133,12 @@
         }
 
         #endregion
-
-        private Label label1;
-        private Label label2;
         private TextBox TXTEMAIL;
         private TextBox TXTSENHA;
         private Button BTNACESSAR;
         private Button BTNCADASTRAR;
         private Button btnmostra;
+        private Label label1;
+        private Label label2;
     }
 }
