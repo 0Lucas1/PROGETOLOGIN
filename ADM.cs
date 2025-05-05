@@ -1,4 +1,5 @@
-﻿using ProjetoSGE;
+﻿using MySql.Data.MySqlClient;
+using ProjetoSGE;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,25 +23,28 @@ namespace PROGETOLOGIN
 
         private void BTNAcessar_Click(object sender, EventArgs e)
         {
-            string adm = "Lucas";
-            string Senha = "1234";
-            if (TXTADM.Text == adm & TXTSENHA.Text == Senha)
+            string usuario = TXTADM.Text;
+            string senha = TXTSENHA.Text;
+            string senhahash = Criptografia.GerarHash(senha);
+            using (var conexao = Conexao.Obterconexao())
             {
-
-                MenuCadastro cadastro = new MenuCadastro();
-                cadastro.Show();
-                this.Hide();
-
-
-
+                string query = "SELECT  * FROM Admninstrador WHERE USUARIO =@USUARIO AND senha=@senha";
+                MySqlCommand cmd = new MySqlCommand(query, conexao);
+                cmd.Parameters.AddWithValue("@USUARIO", usuario);
+                cmd.Parameters.AddWithValue("@senha", senhahash);
+                var reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    MessageBox.Show("Login Realizado com sucesso");
+                    fORMSMENU menu = new fORMSMENU();
+                    menu.Show();
+                    this.Hide();
+                }
+                else
+                {
+                    MessageBox.Show("Usuario ou Senha invalido");
+                }
             }
-            else
-            {
-                lblMensagem.ForeColor = Color.Red;
-                lblMensagem.Text = "Usuário ou senha incorretos";
-            }
-
-
         }
 
         private void button1_Click(object sender, EventArgs e)

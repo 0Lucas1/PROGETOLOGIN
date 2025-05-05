@@ -36,9 +36,9 @@ namespace PROGETOLOGIN
             string senhaHash = Criptografia.GerarHash(senha);
             using (var conexao = Conexao.Obterconexao())
             {
-                string query = "INSERT INTO usuarios(email,senha) VALUES (@email,@senha)";
+                string query = "INSERT INTO usuarios(USUARIO,senha) VALUES (@Usuario,@senha)";
                 MySqlCommand cmd = new MySqlCommand(query, conexao);
-                cmd.Parameters.AddWithValue("@email", email);
+                cmd.Parameters.AddWithValue("@Usuario", email);
                 cmd.Parameters.AddWithValue("@senha", senhaHash);
 
                 try

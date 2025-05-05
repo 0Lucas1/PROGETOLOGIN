@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProjetoSGE;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -21,6 +22,13 @@ namespace PROGETOLOGIN
         {
             formscaixa caixa = new formscaixa();
             caixa.Show();
+            this.Hide();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Estoque telaEstoque = new Estoque();
+            telaEstoque.Show();
             this.Hide();
         }
     }

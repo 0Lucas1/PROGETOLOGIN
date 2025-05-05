@@ -44,13 +44,13 @@
             lblQuantidade = new Label();
             txtProduto = new TextBox();
             lblProduto = new Label();
-            dataGridView1 = new DataGridView();
+            tbtProdutos = new DataGridView();
             btnAtualizar = new Button();
             btnCadastrar = new Button();
             btnDeletar = new Button();
             pictureBox1 = new PictureBox();
             pictureBox2 = new PictureBox();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)tbtProdutos).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             SuspendLayout();
@@ -207,14 +207,14 @@
             lblProduto.TabIndex = 17;
             lblProduto.Text = "PRODUTO";
             // 
-            // dataGridView1
+            // tbtProdutos
             // 
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(44, 26);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(833, 256);
-            dataGridView1.TabIndex = 33;
-            dataGridView1.CellContentClick += dataGridView1_CellContentClick;
+            tbtProdutos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            tbtProdutos.Location = new Point(44, 26);
+            tbtProdutos.Name = "tbtProdutos";
+            tbtProdutos.Size = new Size(833, 256);
+            tbtProdutos.TabIndex = 33;
+            tbtProdutos.CellContentClick += dataGridView1_CellContentClick;
             // 
             // btnAtualizar
             // 
@@ -226,6 +226,7 @@
             btnAtualizar.TabIndex = 35;
             btnAtualizar.Text = "ATUALIZAR";
             btnAtualizar.UseVisualStyleBackColor = true;
+            btnAtualizar.Click += btnAtualizar_Click;
             // 
             // btnCadastrar
             // 
@@ -249,6 +250,7 @@
             btnDeletar.TabIndex = 37;
             btnDeletar.Text = "DELETAR";
             btnDeletar.UseVisualStyleBackColor = true;
+            btnDeletar.Click += btnDeletar_Click;
             // 
             // pictureBox1
             // 
@@ -261,7 +263,7 @@
             // 
             // pictureBox2
             // 
-            pictureBox2.Location = new Point(12, 12);
+            pictureBox2.Location = new Point(0, 12);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(885, 593);
             pictureBox2.TabIndex = 39;
@@ -276,7 +278,7 @@
             Controls.Add(btnDeletar);
             Controls.Add(btnCadastrar);
             Controls.Add(btnAtualizar);
-            Controls.Add(dataGridView1);
+            Controls.Add(tbtProdutos);
             Controls.Add(txtDtValidade);
             Controls.Add(lblDtValidade);
             Controls.Add(txtDtEntrada);
@@ -297,7 +299,7 @@
             Controls.Add(pictureBox1);
             Name = "Estoque";
             Text = "DELETAR ";
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)tbtProdutos).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ResumeLayout(false);
@@ -322,7 +324,7 @@
         private Label lblQuantidade;
         private TextBox txtProduto;
         private Label lblProduto;
-        private DataGridView dataGridView1;
+        private DataGridView tbtProdutos;
         private Button btnAtualizar;
         private Button btnCadastrar;
         private Button btnDeletar;
