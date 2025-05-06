@@ -210,7 +210,7 @@
             // tbtProdutos
             // 
             tbtProdutos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            tbtProdutos.Location = new Point(44, 26);
+            tbtProdutos.Location = new Point(42, 26);
             tbtProdutos.Name = "tbtProdutos";
             tbtProdutos.Size = new Size(833, 256);
             tbtProdutos.TabIndex = 33;
@@ -263,7 +263,7 @@
             // 
             // pictureBox2
             // 
-            pictureBox2.Location = new Point(0, 12);
+            pictureBox2.Location = new Point(12, 10);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(885, 593);
             pictureBox2.TabIndex = 39;
@@ -297,8 +297,11 @@
             Controls.Add(lblProduto);
             Controls.Add(pictureBox2);
             Controls.Add(pictureBox1);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             Name = "Estoque";
-            Text = "DELETAR ";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "ESTOQUE";
             ((System.ComponentModel.ISupportInitialize)tbtProdutos).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();

@@ -34,7 +34,7 @@
             button1 = new Button();
             label2 = new Label();
             label3 = new Label();
-            comboBox2 = new ComboBox();
+            cmbprodutos = new ComboBox();
             label4 = new Label();
             label5 = new Label();
             label6 = new Label();
@@ -47,7 +47,7 @@
             label9 = new Label();
             BTNPAGAR = new Button();
             label10 = new Label();
-            comboBox3 = new ComboBox();
+            cmbtipo = new ComboBox();
             button2 = new Button();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
@@ -111,13 +111,13 @@
             label3.TabIndex = 6;
             label3.Text = ".";
             // 
-            // comboBox2
+            // cmbprodutos
             // 
-            comboBox2.FormattingEnabled = true;
-            comboBox2.Location = new Point(941, 105);
-            comboBox2.Name = "comboBox2";
-            comboBox2.Size = new Size(211, 23);
-            comboBox2.TabIndex = 7;
+            cmbprodutos.FormattingEnabled = true;
+            cmbprodutos.Location = new Point(941, 105);
+            cmbprodutos.Name = "cmbprodutos";
+            cmbprodutos.Size = new Size(211, 23);
+            cmbprodutos.TabIndex = 7;
             // 
             // label4
             // 
@@ -258,13 +258,13 @@
             label10.TabIndex = 23;
             label10.Text = "TIPO:";
             // 
-            // comboBox3
+            // cmbtipo
             // 
-            comboBox3.FormattingEnabled = true;
-            comboBox3.Location = new Point(665, 105);
-            comboBox3.Name = "comboBox3";
-            comboBox3.Size = new Size(211, 23);
-            comboBox3.TabIndex = 24;
+            cmbtipo.FormattingEnabled = true;
+            cmbtipo.Location = new Point(665, 105);
+            cmbtipo.Name = "cmbtipo";
+            cmbtipo.Size = new Size(211, 23);
+            cmbtipo.TabIndex = 24;
             // 
             // button2
             // 
@@ -285,7 +285,7 @@
             BackColor = SystemColors.ActiveBorder;
             ClientSize = new Size(1183, 644);
             Controls.Add(button2);
-            Controls.Add(comboBox3);
+            Controls.Add(cmbtipo);
             Controls.Add(label10);
             Controls.Add(BTNPAGAR);
             Controls.Add(label9);
@@ -296,7 +296,7 @@
             Controls.Add(label6);
             Controls.Add(label5);
             Controls.Add(label4);
-            Controls.Add(comboBox2);
+            Controls.Add(cmbprodutos);
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(button1);
@@ -324,7 +324,7 @@
         private Button button1;
         private Label label2;
         private Label label3;
-        private ComboBox comboBox2;
+        private ComboBox cmbprodutos;
         private Label label4;
         private Label label5;
         private Label label6;
@@ -337,7 +337,7 @@
         private Label label9;
         private Button BTNPAGAR;
         private Label label10;
-        private ComboBox comboBox3;
+        private ComboBox cmbtipo;
         private Button button2;
     }
 }

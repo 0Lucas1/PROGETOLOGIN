@@ -36,7 +36,7 @@ namespace PROGETOLOGIN
                 if (reader.Read())
                 {
                     MessageBox.Show("Login Realizado com sucesso");
-                    fORMSMENU menu = new fORMSMENU();
+                    MenuCadastro menu = new MenuCadastro();
                     menu.Show();
                     this.Hide();
                 }

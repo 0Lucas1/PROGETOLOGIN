@@ -27,8 +27,8 @@ namespace PROGETOLOGIN
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Estoque telaEstoque = new Estoque();
-            telaEstoque.Show();
+            Administrativo Administrativo = new Administrativo();
+            Administrativo.Show();
             this.Hide();
         }
     }
