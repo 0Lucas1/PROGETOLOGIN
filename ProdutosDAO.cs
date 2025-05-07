@@ -1,5 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
-using static Produtos;
+using static Produto;
 
 public class ProdutosDAO
 {
@@ -23,21 +23,32 @@ public class ProdutosDAO
     }
     public List<Produto> ListarPorCategoria(string categoria)
     {
-        List<Produto> produtos = new List<Produto>();  // Alterado de 'Produtos' para 'Produto'
+        List<Produto> produtos = new List<Produto>();
 
-        using (var conn = Conexao.Obterconexao())
+        try
         {
-            string sql = "SELECT id_produto, Nome_Produto, Valor_Venda, Quantidade FROM Estoque WHERE Categoria = @categoria";
-
-            using (var cmd = new MySqlCommand(sql, conn))
+            using (var conn = Conexao.Obterconexao())
             {
-                cmd.Parameters.AddWithValue("@categoria", categoria);
+                // Verifique se a conexão foi aberta
+                if (conn.State == System.Data.ConnectionState.Open)
+                {
+                    MessageBox.Show("Conexão com o banco de dados bem-sucedida!");
+                }
 
-                using (var reader = cmd.ExecuteReader())
+                string sql = "SELECT id_produto, Nome_Produto, Valor_Venda, Quantidade FROM Estoque WHERE Categoria = @categoria";
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@categoria", categoria);
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                if (!reader.HasRows)
+                {
+                    MessageBox.Show("Nenhum produto encontrado na categoria.");
+                }
+                else
                 {
                     while (reader.Read())
                     {
-                        produtos.Add(new Produto()  // Alterado de 'Produtos' para 'Produto'
+                        produtos.Add(new Produto()
                         {
                             ID_Produto = reader.GetInt32("id_produto"),
                             Nome_Produto = reader.GetString("Nome_Produto"),
@@ -48,9 +59,15 @@ public class ProdutosDAO
                 }
             }
         }
+        catch (Exception ex)
+        {
+            MessageBox.Show("Erro ao buscar produtos: " + ex.Message);
+        }
 
         return produtos;
     }
+
+
 
 
 }

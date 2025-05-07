@@ -28,18 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            listBox1 = new ListBox();
+            listCarrinho = new ListBox();
             numericUpDown1 = new NumericUpDown();
-            comboBox1 = new ComboBox();
-            button1 = new Button();
+            cmbFormasDePagamento = new ComboBox();
+            btnAdicionar = new Button();
             label2 = new Label();
-            label3 = new Label();
+            lblValorFinal = new Label();
             cmbprodutos = new ComboBox();
             label4 = new Label();
             label5 = new Label();
             label6 = new Label();
-            label7 = new Label();
-            label8 = new Label();
+            lblValorTotal = new Label();
+            lblDesconto = new Label();
             btnRelatorio = new Button();
             pictureBox5 = new PictureBox();
             pictureBox6 = new PictureBox();
@@ -49,19 +49,24 @@
             label10 = new Label();
             cmbtipo = new ComboBox();
             button2 = new Button();
+            BtnBuscar = new Button();
+            txtValorPagamento = new TextBox();
+            label3 = new Label();
+            lblTroco = new Label();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
             SuspendLayout();
             // 
-            // listBox1
+            // listCarrinho
             // 
-            listBox1.FormattingEnabled = true;
-            listBox1.ItemHeight = 15;
-            listBox1.Location = new Point(25, 29);
-            listBox1.Name = "listBox1";
-            listBox1.Size = new Size(634, 274);
-            listBox1.TabIndex = 0;
+            listCarrinho.Font = new Font("Calibri", 15.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            listCarrinho.FormattingEnabled = true;
+            listCarrinho.ItemHeight = 26;
+            listCarrinho.Location = new Point(25, 29);
+            listCarrinho.Name = "listCarrinho";
+            listCarrinho.Size = new Size(634, 264);
+            listCarrinho.TabIndex = 0;
             // 
             // numericUpDown1
             // 
@@ -70,24 +75,25 @@
             numericUpDown1.Size = new Size(211, 23);
             numericUpDown1.TabIndex = 1;
             // 
-            // comboBox1
+            // cmbFormasDePagamento
             // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(375, 351);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(200, 23);
-            comboBox1.TabIndex = 2;
+            cmbFormasDePagamento.FormattingEnabled = true;
+            cmbFormasDePagamento.Location = new Point(375, 351);
+            cmbFormasDePagamento.Name = "cmbFormasDePagamento";
+            cmbFormasDePagamento.Size = new Size(200, 23);
+            cmbFormasDePagamento.TabIndex = 2;
             // 
-            // button1
+            // btnAdicionar
             // 
-            button1.Cursor = Cursors.Hand;
-            button1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button1.Location = new Point(685, 252);
-            button1.Name = "button1";
-            button1.Size = new Size(159, 33);
-            button1.TabIndex = 3;
-            button1.Text = "ADICIONAR";
-            button1.UseVisualStyleBackColor = true;
+            btnAdicionar.Cursor = Cursors.Hand;
+            btnAdicionar.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnAdicionar.Location = new Point(685, 252);
+            btnAdicionar.Name = "btnAdicionar";
+            btnAdicionar.Size = new Size(159, 33);
+            btnAdicionar.TabIndex = 3;
+            btnAdicionar.Text = "ADICIONAR";
+            btnAdicionar.UseVisualStyleBackColor = true;
+            btnAdicionar.Click += btnAdicionar_Click_1;
             // 
             // label2
             // 
@@ -100,16 +106,17 @@
             label2.TabIndex = 5;
             label2.Text = "TOTAL A PAGAR: ";
             // 
-            // label3
+            // lblValorFinal
             // 
-            label3.AutoSize = true;
-            label3.BackColor = Color.FromArgb(255, 128, 0);
-            label3.Font = new Font("Segoe UI", 21.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label3.Location = new Point(283, 577);
-            label3.Name = "label3";
-            label3.Size = new Size(25, 40);
-            label3.TabIndex = 6;
-            label3.Text = ".";
+            lblValorFinal.AutoSize = true;
+            lblValorFinal.BackColor = Color.FromArgb(255, 128, 0);
+            lblValorFinal.Font = new Font("Segoe UI", 21.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblValorFinal.ForeColor = Color.White;
+            lblValorFinal.Location = new Point(283, 577);
+            lblValorFinal.Name = "lblValorFinal";
+            lblValorFinal.Size = new Size(25, 40);
+            lblValorFinal.TabIndex = 6;
+            lblValorFinal.Text = " ";
             // 
             // cmbprodutos
             // 
@@ -137,7 +144,7 @@
             label5.BackColor = Color.Black;
             label5.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label5.ForeColor = SystemColors.ControlLightLight;
-            label5.Location = new Point(25, 399);
+            label5.Location = new Point(25, 408);
             label5.Name = "label5";
             label5.Size = new Size(206, 37);
             label5.TabIndex = 9;
@@ -155,38 +162,37 @@
             label6.TabIndex = 10;
             label6.Text = "DESCONTO:";
             // 
-            // label7
+            // lblValorTotal
             // 
-            label7.AutoSize = true;
-            label7.BackColor = Color.Black;
-            label7.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label7.ForeColor = SystemColors.Control;
-            label7.Location = new Point(237, 399);
-            label7.Name = "label7";
-            label7.Size = new Size(24, 37);
-            label7.TabIndex = 11;
-            label7.Text = ".";
-            label7.Click += label7_Click;
+            lblValorTotal.AutoSize = true;
+            lblValorTotal.BackColor = Color.Black;
+            lblValorTotal.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblValorTotal.ForeColor = SystemColors.Control;
+            lblValorTotal.Location = new Point(237, 408);
+            lblValorTotal.Name = "lblValorTotal";
+            lblValorTotal.Size = new Size(24, 37);
+            lblValorTotal.TabIndex = 11;
+            lblValorTotal.Text = ".";
             // 
-            // label8
+            // lblDesconto
             // 
-            label8.AutoSize = true;
-            label8.BackColor = Color.Black;
-            label8.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label8.ForeColor = SystemColors.ControlLightLight;
-            label8.Location = new Point(197, 468);
-            label8.Name = "label8";
-            label8.Size = new Size(24, 37);
-            label8.TabIndex = 12;
-            label8.Text = ".";
+            lblDesconto.AutoSize = true;
+            lblDesconto.BackColor = Color.Black;
+            lblDesconto.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblDesconto.ForeColor = SystemColors.ControlLightLight;
+            lblDesconto.Location = new Point(184, 468);
+            lblDesconto.Name = "lblDesconto";
+            lblDesconto.Size = new Size(24, 37);
+            lblDesconto.TabIndex = 12;
+            lblDesconto.Text = ".";
             // 
             // btnRelatorio
             // 
             btnRelatorio.Cursor = Cursors.Hand;
-            btnRelatorio.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnRelatorio.Location = new Point(407, 577);
+            btnRelatorio.Font = new Font("Segoe UI Black", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnRelatorio.Location = new Point(573, 578);
             btnRelatorio.Name = "btnRelatorio";
-            btnRelatorio.Size = new Size(207, 39);
+            btnRelatorio.Size = new Size(211, 39);
             btnRelatorio.TabIndex = 13;
             btnRelatorio.Text = "RELATÓRIO DE VENDAS";
             btnRelatorio.UseVisualStyleBackColor = true;
@@ -239,12 +245,13 @@
             BTNPAGAR.BackColor = Color.FromArgb(255, 128, 0);
             BTNPAGAR.Cursor = Cursors.Hand;
             BTNPAGAR.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            BTNPAGAR.Location = new Point(665, 541);
+            BTNPAGAR.Location = new Point(804, 539);
             BTNPAGAR.Name = "BTNPAGAR";
             BTNPAGAR.Size = new Size(226, 78);
             BTNPAGAR.TabIndex = 22;
             BTNPAGAR.Text = "PAGAR";
             BTNPAGAR.UseVisualStyleBackColor = false;
+            BTNPAGAR.Click += BTNPAGAR_Click;
             // 
             // label10
             // 
@@ -263,7 +270,7 @@
             cmbtipo.FormattingEnabled = true;
             cmbtipo.Location = new Point(665, 105);
             cmbtipo.Name = "cmbtipo";
-            cmbtipo.Size = new Size(211, 23);
+            cmbtipo.Size = new Size(148, 23);
             cmbtipo.TabIndex = 24;
             // 
             // button2
@@ -276,7 +283,49 @@
             button2.TabIndex = 25;
             button2.Text = "VOLTAR";
             button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
+            // 
+            // BtnBuscar
+            // 
+            BtnBuscar.Cursor = Cursors.Hand;
+            BtnBuscar.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            BtnBuscar.Location = new Point(832, 99);
+            BtnBuscar.Name = "BtnBuscar";
+            BtnBuscar.Size = new Size(93, 29);
+            BtnBuscar.TabIndex = 26;
+            BtnBuscar.Text = "BUSCAR";
+            BtnBuscar.UseVisualStyleBackColor = true;
+            BtnBuscar.Click += BtnBuscar_Click;
+            // 
+            // txtValorPagamento
+            // 
+            txtValorPagamento.Location = new Point(602, 351);
+            txtValorPagamento.Name = "txtValorPagamento";
+            txtValorPagamento.Size = new Size(149, 23);
+            txtValorPagamento.TabIndex = 27;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.BackColor = Color.Black;
+            label3.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label3.ForeColor = SystemColors.ControlLightLight;
+            label3.Location = new Point(752, 337);
+            label3.Name = "label3";
+            label3.Size = new Size(122, 37);
+            label3.TabIndex = 28;
+            label3.Text = "TROCO: ";
+            // 
+            // lblTroco
+            // 
+            lblTroco.AutoSize = true;
+            lblTroco.BackColor = Color.Black;
+            lblTroco.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblTroco.ForeColor = SystemColors.ControlLightLight;
+            lblTroco.Location = new Point(867, 336);
+            lblTroco.Name = "lblTroco";
+            lblTroco.Size = new Size(24, 37);
+            lblTroco.TabIndex = 29;
+            lblTroco.Text = ".";
             // 
             // formscaixa
             // 
@@ -284,6 +333,11 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveBorder;
             ClientSize = new Size(1183, 644);
+            Controls.Add(lblTroco);
+            Controls.Add(lblDesconto);
+            Controls.Add(label3);
+            Controls.Add(txtValorPagamento);
+            Controls.Add(BtnBuscar);
             Controls.Add(button2);
             Controls.Add(cmbtipo);
             Controls.Add(label10);
@@ -291,18 +345,17 @@
             Controls.Add(label9);
             Controls.Add(label1);
             Controls.Add(btnRelatorio);
-            Controls.Add(label8);
-            Controls.Add(label7);
+            Controls.Add(lblValorTotal);
             Controls.Add(label6);
             Controls.Add(label5);
             Controls.Add(label4);
             Controls.Add(cmbprodutos);
-            Controls.Add(label3);
+            Controls.Add(lblValorFinal);
             Controls.Add(label2);
-            Controls.Add(button1);
-            Controls.Add(comboBox1);
+            Controls.Add(btnAdicionar);
+            Controls.Add(cmbFormasDePagamento);
             Controls.Add(numericUpDown1);
-            Controls.Add(listBox1);
+            Controls.Add(listCarrinho);
             Controls.Add(pictureBox6);
             Controls.Add(pictureBox5);
             MaximizeBox = false;
@@ -318,18 +371,18 @@
 
         #endregion
 
-        private ListBox listBox1;
+        private ListBox listCarrinho;
         private NumericUpDown numericUpDown1;
-        private ComboBox comboBox1;
+        private ComboBox cmbFormasDePagamento;
         private Button button1;
         private Label label2;
-        private Label label3;
+        private Label lblValorFinal;
         private ComboBox cmbprodutos;
         private Label label4;
         private Label label5;
         private Label label6;
-        private Label label7;
-        private Label label8;
+        private Label lblValorTotal;
+        private Label lblDesconto;
         private Button btnRelatorio;
         private PictureBox pictureBox5;
         private PictureBox pictureBox6;
@@ -339,5 +392,11 @@
         private Label label10;
         private ComboBox cmbtipo;
         private Button button2;
+        private Button BtnBuscar;
+        private Button btnAdicionar;
+        private TextBox txtValorPagamento;
+        private Label label3;
+        private Label lblTroco;
+        private DateTimePicker dateTimePicker1;
     }
 }

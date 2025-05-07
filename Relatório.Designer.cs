@@ -28,36 +28,38 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Grid_Relatorio = new DataGridView();
-            ((System.ComponentModel.ISupportInitialize)Grid_Relatorio).BeginInit();
+            dataGridViewRelatorio = new DataGridView();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewRelatorio).BeginInit();
             SuspendLayout();
             // 
-            // Grid_Relatorio
+            // dataGridViewRelatorio
             // 
-            Grid_Relatorio.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            Grid_Relatorio.Location = new Point(3, 0);
-            Grid_Relatorio.Name = "Grid_Relatorio";
-            Grid_Relatorio.Size = new Size(884, 284);
-            Grid_Relatorio.TabIndex = 0;
-            Grid_Relatorio.CellContentClick += dataGridView1_CellContentClick;
+            dataGridViewRelatorio.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewRelatorio.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewRelatorio.Location = new Point(3, 0);
+            dataGridViewRelatorio.Name = "dataGridViewRelatorio";
+            dataGridViewRelatorio.Size = new Size(884, 284);
+            dataGridViewRelatorio.TabIndex = 0;
+            dataGridViewRelatorio.CellContentClick += dataGridView1_CellContentClick;
             // 
             // Relatório
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(886, 285);
-            Controls.Add(Grid_Relatorio);
+            Controls.Add(dataGridViewRelatorio);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             Name = "Relatório";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Relatório";
-            ((System.ComponentModel.ISupportInitialize)Grid_Relatorio).EndInit();
+            Load += Relatório_Load;
+            ((System.ComponentModel.ISupportInitialize)dataGridViewRelatorio).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private DataGridView Grid_Relatorio;
+        private DataGridView dataGridViewRelatorio;
     }
 }
