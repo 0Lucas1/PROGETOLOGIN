@@ -4,8 +4,9 @@ namespace PROGETOLOGIN
 {
     public partial class LOGIN : Form
     {
-        // ✅ Variável estática que armazena o nome do usuário logado
+        // ✅ Variáveis estáticas para armazenar os dados do usuário logado
         public static string UsuarioLogado;
+        public static int IDUsuarioLogado;
 
         private bool senhaVisivel;
 
@@ -39,7 +40,8 @@ namespace PROGETOLOGIN
 
                 if (reader.Read())
                 {
-                    // ✅ Armazena o nome do usuário logado para uso global
+                    // ✅ Armazena o ID e o nome do usuário logado para uso global
+                    IDUsuarioLogado = Convert.ToInt32(reader["ID"]);
                     UsuarioLogado = reader["USUARIO"].ToString();
 
                     MessageBox.Show("Login realizado com sucesso!");

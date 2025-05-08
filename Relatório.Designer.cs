@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             dataGridViewRelatorio = new DataGridView();
+            label1 = new Label();
+            BTNsalvar = new Button();
+            dateTimePicker1 = new DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)dataGridViewRelatorio).BeginInit();
             SuspendLayout();
             // 
@@ -40,26 +43,57 @@
             dataGridViewRelatorio.Name = "dataGridViewRelatorio";
             dataGridViewRelatorio.Size = new Size(884, 284);
             dataGridViewRelatorio.TabIndex = 0;
-            dataGridViewRelatorio.CellContentClick += dataGridView1_CellContentClick;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Location = new Point(45, 317);
+            label1.Name = "label1";
+            label1.Size = new Size(156, 25);
+            label1.TabIndex = 1;
+            label1.Text = "SALVAR EM PDF";
+            // 
+            // BTNsalvar
+            // 
+            BTNsalvar.Location = new Point(88, 360);
+            BTNsalvar.Name = "BTNsalvar";
+            BTNsalvar.Size = new Size(75, 23);
+            BTNsalvar.TabIndex = 2;
+            BTNsalvar.Text = "SALVAR";
+            BTNsalvar.UseVisualStyleBackColor = true;
+            // 
+            // dateTimePicker1
+            // 
+            dateTimePicker1.Location = new Point(687, 290);
+            dateTimePicker1.Name = "dateTimePicker1";
+            dateTimePicker1.Size = new Size(200, 23);
+            dateTimePicker1.TabIndex = 3;
             // 
             // Relatório
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(886, 285);
+            ClientSize = new Size(886, 432);
+            Controls.Add(dateTimePicker1);
+            Controls.Add(BTNsalvar);
+            Controls.Add(label1);
             Controls.Add(dataGridViewRelatorio);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             Name = "Relatório";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Relatório";
-            Load += Relatório_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridViewRelatorio).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
         private DataGridView dataGridViewRelatorio;
+        private Label label1;
+        private Button BTNsalvar;
+        private DateTimePicker dateTimePicker1;
     }
 }

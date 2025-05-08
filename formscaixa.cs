@@ -249,57 +249,58 @@ namespace PROGETOLOGIN
 
             try
             {
+                // Conexão com o banco de dados
                 using (var conn = Conexao.Obterconexao())
                 {
                     foreach (var item in carrinho)
                     {
-                        // Atualiza o estoque
-                        string sqlEstoque = "UPDATE Estoque SET Quantidade = Quantidade - @quantidade WHERE id_produto = @id";
-                        MySqlCommand cmdEstoque = new MySqlCommand(sqlEstoque, conn);
-                        cmdEstoque.Parameters.AddWithValue("@quantidade", item.Estoque);
-                        cmdEstoque.Parameters.AddWithValue("@id", item.ID_Produto);
-                        cmdEstoque.ExecuteNonQuery();
-                    }
-                }
+                        // Obter o nome do produto (apenas para exibir ou logar, não vai para o INSERT)
+                        string nomeProdutoQuery = "SELECT Nome_Produto FROM Estoque WHERE ID_Produto = @id_produto";
+                        MySqlCommand cmdNomeProduto = new MySqlCommand(nomeProdutoQuery, conn);
+                        cmdNomeProduto.Parameters.AddWithValue("@id_produto", item.ID_Produto);
+                        string nomeProduto = cmdNomeProduto.ExecuteScalar()?.ToString();
 
-                // Salvar dados da venda no relatório
-                using (var conn = Conexao.Obterconexao())
-                {
-                    foreach (var item in carrinho)
-                    {
-                        string insertSql = @"INSERT INTO relatorio_vendas 
-                    (usuario, produto, quantidade, data_venda, valor_venda, lucro) 
-                    VALUES (@usuario, @produto, @quantidade, @data_venda, @valor_venda, @lucro)";
+                        // Obter o nome do usuário logado (apenas para exibir ou logar)
+                        string nomeUsuarioQuery = "SELECT Usuario FROM Usuarios WHERE ID = @id_usuario";
+                        MySqlCommand cmdNomeUsuario = new MySqlCommand(nomeUsuarioQuery, conn);
+                        cmdNomeUsuario.Parameters.AddWithValue("@id_usuario", LOGIN.IDUsuarioLogado);
+                        string nomeUsuario = cmdNomeUsuario.ExecuteScalar()?.ToString();
+
+                        // Comando de inserção na tabela 'vendas' usando os IDs, como deve ser
+                        string insertSql = @"INSERT INTO vendas 
+            (ID_Produto, Quantidade, Valor_Total, Data_Venda, ID_Usuario) 
+            VALUES (@id_produto, @quantidade, @valor_total, @data_venda, @id_usuario)";
 
                         MySqlCommand cmd = new MySqlCommand(insertSql, conn);
-                        cmd.Parameters.AddWithValue("@usuario", LOGIN.UsuarioLogado); // usuário logado
-                        cmd.Parameters.AddWithValue("@produto", item.Nome_Produto);
-                        cmd.Parameters.AddWithValue("@quantidade", item.Estoque); // quantidade vendida
+                        cmd.Parameters.AddWithValue("@id_produto", item.ID_Produto); // Correto
+                        cmd.Parameters.AddWithValue("@quantidade", item.Estoque);
+                        cmd.Parameters.AddWithValue("@valor_total", item.Valor_Venda * item.Estoque);
                         cmd.Parameters.AddWithValue("@data_venda", DateTime.Now);
-                        cmd.Parameters.AddWithValue("@valor_venda", item.Valor_Venda * item.Estoque);
-                        decimal lucro = (item.Valor_Venda - item.Valor_Compra) * item.Estoque;
-                        cmd.Parameters.AddWithValue("@lucro", lucro);
+                        cmd.Parameters.AddWithValue("@id_usuario", LOGIN.IDUsuarioLogado); // Correto
 
                         cmd.ExecuteNonQuery();
+
+                        // (Opcional) Log no console
+                        Console.WriteLine($"Venda registrada: {nomeProduto} vendida por {nomeUsuario}");
                     }
-                }
 
-                MessageBox.Show("Pagamento realizado com sucesso!");
+                    MessageBox.Show("Pagamento realizado com sucesso!");
 
-                // Limpar interface e resetar carrinho
-                carrinho.Clear();
-                listCarrinho.Items.Clear();
-                lblValorTotal.Text = "Total sem desconto: R$ 0,00";
-                lblValorFinal.Text = "R$ 0,00";
-                lblDesconto.Text = "Sem desconto";
-                txtValorPagamento.Text = "";
-                lblTroco.Text = "";
-                cmbFormasDePagamento.SelectedIndex = -1;
+                    // Limpar interface e resetar carrinho
+                    carrinho.Clear();
+                    listCarrinho.Items.Clear();
+                    lblValorTotal.Text = "Total sem desconto: R$ 0,00";
+                    lblValorFinal.Text = "R$ 0,00";
+                    lblDesconto.Text = "Sem desconto";
+                    txtValorPagamento.Text = "";
+                    lblTroco.Text = "";
+                    cmbFormasDePagamento.SelectedIndex = -1;
 
-                // Atualiza lista de produtos, se houver categoria selecionada
-                if (cmbtipo.SelectedItem != null)
-                {
-                    BtnBuscar_Click(null, null);
+                    // Atualiza lista de produtos se houver categoria selecionada
+                    if (cmbtipo.SelectedItem != null)
+                    {
+                        BtnBuscar_Click(null, null);
+                    }
                 }
             }
             catch (Exception ex)
@@ -307,6 +308,7 @@ namespace PROGETOLOGIN
                 MessageBox.Show("Erro ao processar pagamento: " + ex.Message);
             }
         }
+
 
 
         private void btnRelatorio_Click(object sender, EventArgs e)
