@@ -284,6 +284,7 @@
             button2.TabIndex = 25;
             button2.Text = "VOLTAR";
             button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
             // BtnBuscar
             // 

@@ -29,31 +29,51 @@ namespace PROGETOLOGIN
             string senha = TXTSENHA.Text;
             string senhahash = Criptografia.GerarHash(senha);
 
-            using (var conexao = Conexao.Obterconexao())
+            // Verifica se o campo de e-mail ou senha está vazio
+            if (string.IsNullOrEmpty(usuario) || string.IsNullOrEmpty(senha))
             {
-                string query = "SELECT * FROM usuarios WHERE USUARIO = @USUARIO AND senha = @senha";
-                MySqlCommand cmd = new MySqlCommand(query, conexao);
-                cmd.Parameters.AddWithValue("@USUARIO", usuario);
-                cmd.Parameters.AddWithValue("@senha", senhahash);
+                MessageBox.Show("Por favor, preencha todos os campos.");
+                return;
+            }
 
-                var reader = cmd.ExecuteReader();
-
-                if (reader.Read())
+            try
+            {
+                using (var conexao = Conexao.Obterconexao())
                 {
-                    // ✅ Armazena o ID e o nome do usuário logado para uso global
-                    IDUsuarioLogado = Convert.ToInt32(reader["ID"]);
-                    UsuarioLogado = reader["USUARIO"].ToString();
+                    // Query que busca o usuário na tabela 'usuarios' com a senha correta
+                    string query = "SELECT * FROM usuarios WHERE USUARIO = @USUARIO AND senha = @senha";
+                    MySqlCommand cmd = new MySqlCommand(query, conexao);
+                    cmd.Parameters.AddWithValue("@USUARIO", usuario);
+                    cmd.Parameters.AddWithValue("@senha", senhahash);
 
-                    MessageBox.Show("Login realizado com sucesso!");
+                    var reader = cmd.ExecuteReader();
 
-                    fORMSMENU menu = new fORMSMENU();
-                    menu.Show();
-                    this.Hide();
+                    if (reader.Read())
+                    {
+                        // ✅ Armazena o ID e o nome do usuário logado para uso global
+                        IDUsuarioLogado = Convert.ToInt32(reader["ID"]);
+                        UsuarioLogado = reader["USUARIO"].ToString();
+
+                        MessageBox.Show("Login realizado com sucesso!");
+
+                        // Exibe o menu após login bem-sucedido
+                        fORMSMENU menu = new fORMSMENU();
+                        menu.Show();
+                        this.Hide();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Usuário ou senha inválido.");
+                    }
                 }
-                else
-                {
-                    MessageBox.Show("Usuário ou senha inválido.");
-                }
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show("Erro ao acessar o banco de dados: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro inesperado: " + ex.Message);
             }
         }
 
@@ -68,7 +88,7 @@ namespace PROGETOLOGIN
             else
             {
                 TXTSENHA.PasswordChar = '\0';
-                btnmostra.Text = "Esconder";
+                btnmostra.Text = "Ocultar";
                 senhaVisivel = true;
             }
         }

@@ -1,5 +1,6 @@
 ﻿using MySql.Data.MySqlClient;
 using Mysqlx.Crud;
+using PROGETOLOGIN;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -233,6 +234,13 @@ namespace ProjetoSGE
 
                 }
             }
+        }
+
+        private void BTNVOLTAR_Click(object sender, EventArgs e)
+        {
+            fORMSMENU MENU = new fORMSMENU();
+            MENU.Show();
+            this.Hide();
         }
     }
 }

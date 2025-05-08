@@ -217,6 +217,8 @@ namespace PROGETOLOGIN
         }
 
         private void BTNPAGAR_Click(object sender, EventArgs e)
+        
+          
         {
             if (carrinho.Count == 0)
             {
@@ -245,18 +247,17 @@ namespace PROGETOLOGIN
             }
 
             decimal troco = valorPago - valorFinal;
-            lblTroco.Text = $"Troco: R$ {troco:F2}";
+            lblTroco.Text = troco >= 0 ? $"Troco: R$ {troco:F2}" : "Valor insuficiente para pagamento.";
 
             try
             {
-                // Conexão com o banco de dados
                 using (var conn = Conexao.Obterconexao())
                 {
                     using (var transaction = conn.BeginTransaction()) // Inicia uma transação para garantir a integridade dos dados
                     {
                         foreach (var item in carrinho)
                         {
-                            // Obter o nome do produto (apenas para exibir ou logar, não vai para o INSERT)
+                            // Obter o nome do produto
                             string nomeProdutoQuery = "SELECT Nome_Produto FROM Estoque WHERE ID_Produto = @id_produto";
                             MySqlCommand cmdNomeProduto = new MySqlCommand(nomeProdutoQuery, conn);
                             cmdNomeProduto.Parameters.AddWithValue("@id_produto", item.ID_Produto);
@@ -280,19 +281,28 @@ namespace PROGETOLOGIN
                                 return;
                             }
 
-                            // Comando de inserção na tabela 'vendas' usando os IDs, como deve ser
+                            // Comando para inserir a venda na tabela 'vendas'
                             string insertSql = @"INSERT INTO vendas 
-    (ID_Produto, Quantidade, Valor_Total, Data_Venda, ID_Usuario) 
-    VALUES (@id_produto, @quantidade, @valor_total, @data_venda, @id_usuario)";
+                    (ID_Produto, Quantidade, Valor_Total, Data_Venda, ID_Usuario) 
+                    VALUES (@id_produto, @quantidade, @valor_total, @data_venda, @id_usuario)";
 
                             MySqlCommand cmd = new MySqlCommand(insertSql, conn);
-                            cmd.Parameters.AddWithValue("@id_produto", item.ID_Produto); // Correto
+                            cmd.Parameters.AddWithValue("@id_produto", item.ID_Produto);
                             cmd.Parameters.AddWithValue("@quantidade", item.Estoque);
                             cmd.Parameters.AddWithValue("@valor_total", item.Valor_Venda * item.Estoque);
                             cmd.Parameters.AddWithValue("@data_venda", DateTime.Now);
-                            cmd.Parameters.AddWithValue("@id_usuario", LOGIN.IDUsuarioLogado); // Correto
-
+                            cmd.Parameters.AddWithValue("@id_usuario", LOGIN.IDUsuarioLogado);
                             cmd.ExecuteNonQuery(); // Registra a venda
+
+                            // Baixar o estoque após a venda
+                            string updateEstoqueSql = @"UPDATE Estoque 
+                                                SET Quantidade = Quantidade - @quantidade
+                                                WHERE ID_Produto = @id_produto";
+
+                            MySqlCommand cmdUpdateEstoque = new MySqlCommand(updateEstoqueSql, conn);
+                            cmdUpdateEstoque.Parameters.AddWithValue("@quantidade", item.Estoque);
+                            cmdUpdateEstoque.Parameters.AddWithValue("@id_produto", item.ID_Produto);
+                            cmdUpdateEstoque.ExecuteNonQuery(); // Atualiza o estoque
 
                             // (Opcional) Log no console
                             Console.WriteLine($"Venda registrada: {nomeProduto} vendida por {nomeUsuario}");
@@ -328,12 +338,13 @@ namespace PROGETOLOGIN
 
 
 
+
         private void btnRelatorio_Click(object sender, EventArgs e)
         {
             Relatório relatorio = new Relatório();
             relatorio.ShowDialog();
         }
-      
+
 
         private void btnVerCaixa_Click_1(object sender, EventArgs e)
         {
@@ -371,6 +382,13 @@ namespace PROGETOLOGIN
             {
                 MessageBox.Show("Erro ao acessar o banco de dados: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            LOGIN login = new LOGIN();
+            login.Show();
+            this.Hide();
         }
     }
 }

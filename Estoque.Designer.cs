@@ -50,6 +50,7 @@
             btnDeletar = new Button();
             pictureBox1 = new PictureBox();
             pictureBox2 = new PictureBox();
+            BTNVOLTAR = new Button();
             ((System.ComponentModel.ISupportInitialize)tbtProdutos).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
@@ -269,12 +270,25 @@
             pictureBox2.TabIndex = 39;
             pictureBox2.TabStop = false;
             // 
+            // BTNVOLTAR
+            // 
+            BTNVOLTAR.Cursor = Cursors.Hand;
+            BTNVOLTAR.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            BTNVOLTAR.Location = new Point(25, 562);
+            BTNVOLTAR.Name = "BTNVOLTAR";
+            BTNVOLTAR.Size = new Size(167, 32);
+            BTNVOLTAR.TabIndex = 40;
+            BTNVOLTAR.Text = "VOLTAR";
+            BTNVOLTAR.UseVisualStyleBackColor = true;
+            BTNVOLTAR.Click += BTNVOLTAR_Click;
+            // 
             // Estoque
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Black;
             ClientSize = new Size(909, 615);
+            Controls.Add(BTNVOLTAR);
             Controls.Add(btnDeletar);
             Controls.Add(btnCadastrar);
             Controls.Add(btnAtualizar);
@@ -333,5 +347,6 @@
         private Button btnDeletar;
         private PictureBox pictureBox1;
         private PictureBox pictureBox2;
+        private Button BTNVOLTAR;
     }
 }
