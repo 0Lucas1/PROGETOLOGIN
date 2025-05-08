@@ -53,6 +53,7 @@
             txtValorPagamento = new TextBox();
             label3 = new Label();
             lblTroco = new Label();
+            btnVerCaixa = new Button();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -327,12 +328,24 @@
             lblTroco.TabIndex = 29;
             lblTroco.Text = ".";
             // 
+            // btnVerCaixa
+            // 
+            btnVerCaixa.Font = new Font("Segoe UI Black", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnVerCaixa.Location = new Point(573, 539);
+            btnVerCaixa.Name = "btnVerCaixa";
+            btnVerCaixa.Size = new Size(211, 33);
+            btnVerCaixa.TabIndex = 30;
+            btnVerCaixa.Text = "VER CAIXA";
+            btnVerCaixa.UseVisualStyleBackColor = true;
+            btnVerCaixa.Click += btnVerCaixa_Click_1;
+            // 
             // formscaixa
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveBorder;
             ClientSize = new Size(1183, 644);
+            Controls.Add(btnVerCaixa);
             Controls.Add(lblTroco);
             Controls.Add(lblDesconto);
             Controls.Add(label3);
@@ -398,5 +411,6 @@
         private Label label3;
         private Label lblTroco;
         private DateTimePicker dateTimePicker1;
+        private Button btnVerCaixa;
     }
 }

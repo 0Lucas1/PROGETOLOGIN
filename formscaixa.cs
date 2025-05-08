@@ -252,36 +252,53 @@ namespace PROGETOLOGIN
                 // Conexão com o banco de dados
                 using (var conn = Conexao.Obterconexao())
                 {
-                    foreach (var item in carrinho)
+                    using (var transaction = conn.BeginTransaction()) // Inicia uma transação para garantir a integridade dos dados
                     {
-                        // Obter o nome do produto (apenas para exibir ou logar, não vai para o INSERT)
-                        string nomeProdutoQuery = "SELECT Nome_Produto FROM Estoque WHERE ID_Produto = @id_produto";
-                        MySqlCommand cmdNomeProduto = new MySqlCommand(nomeProdutoQuery, conn);
-                        cmdNomeProduto.Parameters.AddWithValue("@id_produto", item.ID_Produto);
-                        string nomeProduto = cmdNomeProduto.ExecuteScalar()?.ToString();
+                        foreach (var item in carrinho)
+                        {
+                            // Obter o nome do produto (apenas para exibir ou logar, não vai para o INSERT)
+                            string nomeProdutoQuery = "SELECT Nome_Produto FROM Estoque WHERE ID_Produto = @id_produto";
+                            MySqlCommand cmdNomeProduto = new MySqlCommand(nomeProdutoQuery, conn);
+                            cmdNomeProduto.Parameters.AddWithValue("@id_produto", item.ID_Produto);
+                            string nomeProduto = cmdNomeProduto.ExecuteScalar()?.ToString();
 
-                        // Obter o nome do usuário logado (apenas para exibir ou logar)
-                        string nomeUsuarioQuery = "SELECT Usuario FROM Usuarios WHERE ID = @id_usuario";
-                        MySqlCommand cmdNomeUsuario = new MySqlCommand(nomeUsuarioQuery, conn);
-                        cmdNomeUsuario.Parameters.AddWithValue("@id_usuario", LOGIN.IDUsuarioLogado);
-                        string nomeUsuario = cmdNomeUsuario.ExecuteScalar()?.ToString();
+                            if (string.IsNullOrEmpty(nomeProduto)) // Verifica se o produto foi encontrado
+                            {
+                                MessageBox.Show("Produto não encontrado no banco de dados.");
+                                return;
+                            }
 
-                        // Comando de inserção na tabela 'vendas' usando os IDs, como deve ser
-                        string insertSql = @"INSERT INTO vendas 
-            (ID_Produto, Quantidade, Valor_Total, Data_Venda, ID_Usuario) 
-            VALUES (@id_produto, @quantidade, @valor_total, @data_venda, @id_usuario)";
+                            // Obter o nome do usuário logado (somente da tabela 'Usuarios')
+                            string nomeUsuarioQuery = "SELECT Usuario FROM Usuarios WHERE ID = @id_usuario";
+                            MySqlCommand cmdNomeUsuario = new MySqlCommand(nomeUsuarioQuery, conn);
+                            cmdNomeUsuario.Parameters.AddWithValue("@id_usuario", LOGIN.IDUsuarioLogado);
+                            string nomeUsuario = cmdNomeUsuario.ExecuteScalar()?.ToString();
 
-                        MySqlCommand cmd = new MySqlCommand(insertSql, conn);
-                        cmd.Parameters.AddWithValue("@id_produto", item.ID_Produto); // Correto
-                        cmd.Parameters.AddWithValue("@quantidade", item.Estoque);
-                        cmd.Parameters.AddWithValue("@valor_total", item.Valor_Venda * item.Estoque);
-                        cmd.Parameters.AddWithValue("@data_venda", DateTime.Now);
-                        cmd.Parameters.AddWithValue("@id_usuario", LOGIN.IDUsuarioLogado); // Correto
+                            if (string.IsNullOrEmpty(nomeUsuario)) // Verifica se o usuário foi encontrado
+                            {
+                                MessageBox.Show("Usuário não encontrado ou inválido.");
+                                return;
+                            }
 
-                        cmd.ExecuteNonQuery();
+                            // Comando de inserção na tabela 'vendas' usando os IDs, como deve ser
+                            string insertSql = @"INSERT INTO vendas 
+    (ID_Produto, Quantidade, Valor_Total, Data_Venda, ID_Usuario) 
+    VALUES (@id_produto, @quantidade, @valor_total, @data_venda, @id_usuario)";
 
-                        // (Opcional) Log no console
-                        Console.WriteLine($"Venda registrada: {nomeProduto} vendida por {nomeUsuario}");
+                            MySqlCommand cmd = new MySqlCommand(insertSql, conn);
+                            cmd.Parameters.AddWithValue("@id_produto", item.ID_Produto); // Correto
+                            cmd.Parameters.AddWithValue("@quantidade", item.Estoque);
+                            cmd.Parameters.AddWithValue("@valor_total", item.Valor_Venda * item.Estoque);
+                            cmd.Parameters.AddWithValue("@data_venda", DateTime.Now);
+                            cmd.Parameters.AddWithValue("@id_usuario", LOGIN.IDUsuarioLogado); // Correto
+
+                            cmd.ExecuteNonQuery(); // Registra a venda
+
+                            // (Opcional) Log no console
+                            Console.WriteLine($"Venda registrada: {nomeProduto} vendida por {nomeUsuario}");
+                        }
+
+                        transaction.Commit(); // Se todas as vendas forem inseridas com sucesso, comita a transação
                     }
 
                     MessageBox.Show("Pagamento realizado com sucesso!");
@@ -315,6 +332,45 @@ namespace PROGETOLOGIN
         {
             Relatório relatorio = new Relatório();
             relatorio.ShowDialog();
+        }
+      
+
+        private void btnVerCaixa_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                // Conexão com o banco de dados
+                using (var conn = Conexao.Obterconexao())
+                {
+                    // Consulta SQL para calcular o faturamento e lucro
+                    string queryCaixa = @"
+                SELECT SUM(v.quantidade * e.Valor_Venda) AS Faturamento,
+                       SUM((e.Valor_Venda - e.Valor_Compra) * v.quantidade) AS Lucro
+                FROM vendas v
+                JOIN Estoque e ON v.ID_Produto = e.ID_Produto";
+
+                    MySqlCommand cmdCaixa = new MySqlCommand(queryCaixa, conn);
+                    MySqlDataReader reader = cmdCaixa.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        decimal faturamento = reader.IsDBNull(0) ? 0 : reader.GetDecimal(0);
+                        decimal lucro = reader.IsDBNull(1) ? 0 : reader.GetDecimal(1);
+
+                        // Exibir os valores de Caixa, Faturamento e Lucro na MessageBox
+                        MessageBox.Show($"Caixa Atual: R$ {faturamento:C}\nFaturamento Total: R$ {faturamento:C}\nLucro Acumulado: R$ {lucro:C}",
+                                        "Informações do Caixa", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Não há vendas registradas para mostrar.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao acessar o banco de dados: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
