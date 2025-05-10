@@ -29,11 +29,7 @@ public class ProdutosDAO
         {
             using (var conn = Conexao.Obterconexao())
             {
-                // Verifique se a conexão foi aberta
-                if (conn.State == System.Data.ConnectionState.Open)
-                {
-                    MessageBox.Show("Conexão com o banco de dados bem-sucedida!");
-                }
+                
 
                 string sql = "SELECT id_produto, Nome_Produto, Valor_Venda, Quantidade FROM Estoque WHERE Categoria = @categoria";
                 MySqlCommand cmd = new MySqlCommand(sql, conn);

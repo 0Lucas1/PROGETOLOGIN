@@ -39,7 +39,6 @@
             label5 = new Label();
             label6 = new Label();
             lblValorTotal = new Label();
-            lblDesconto = new Label();
             btnRelatorio = new Button();
             pictureBox5 = new PictureBox();
             pictureBox6 = new PictureBox();
@@ -54,6 +53,11 @@
             label3 = new Label();
             lblTroco = new Label();
             btnVerCaixa = new Button();
+            btnfecharcaixa = new Button();
+            btnabrircaixa = new Button();
+            BtnCancelar = new Button();
+            txtDesconto = new TextBox();
+            BtnAplicar = new Button();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -110,7 +114,7 @@
             // lblValorFinal
             // 
             lblValorFinal.AutoSize = true;
-            lblValorFinal.BackColor = Color.FromArgb(255, 128, 0);
+            lblValorFinal.BackColor = Color.Black;
             lblValorFinal.Font = new Font("Segoe UI", 21.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblValorFinal.ForeColor = Color.White;
             lblValorFinal.Location = new Point(283, 577);
@@ -171,27 +175,14 @@
             lblValorTotal.ForeColor = SystemColors.Control;
             lblValorTotal.Location = new Point(237, 408);
             lblValorTotal.Name = "lblValorTotal";
-            lblValorTotal.Size = new Size(24, 37);
+            lblValorTotal.Size = new Size(0, 37);
             lblValorTotal.TabIndex = 11;
-            lblValorTotal.Text = ".";
-            // 
-            // lblDesconto
-            // 
-            lblDesconto.AutoSize = true;
-            lblDesconto.BackColor = Color.Black;
-            lblDesconto.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblDesconto.ForeColor = SystemColors.ControlLightLight;
-            lblDesconto.Location = new Point(184, 468);
-            lblDesconto.Name = "lblDesconto";
-            lblDesconto.Size = new Size(24, 37);
-            lblDesconto.TabIndex = 12;
-            lblDesconto.Text = ".";
             // 
             // btnRelatorio
             // 
             btnRelatorio.Cursor = Cursors.Hand;
             btnRelatorio.Font = new Font("Segoe UI Black", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnRelatorio.Location = new Point(573, 578);
+            btnRelatorio.Location = new Point(507, 577);
             btnRelatorio.Name = "btnRelatorio";
             btnRelatorio.Size = new Size(211, 39);
             btnRelatorio.TabIndex = 13;
@@ -246,9 +237,9 @@
             BTNPAGAR.BackColor = Color.FromArgb(255, 128, 0);
             BTNPAGAR.Cursor = Cursors.Hand;
             BTNPAGAR.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            BTNPAGAR.Location = new Point(804, 539);
+            BTNPAGAR.Location = new Point(795, 568);
             BTNPAGAR.Name = "BTNPAGAR";
-            BTNPAGAR.Size = new Size(226, 78);
+            BTNPAGAR.Size = new Size(214, 58);
             BTNPAGAR.TabIndex = 22;
             BTNPAGAR.Text = "PAGAR";
             BTNPAGAR.UseVisualStyleBackColor = false;
@@ -278,7 +269,7 @@
             // 
             button2.Cursor = Cursors.Hand;
             button2.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button2.Location = new Point(1059, 580);
+            button2.Location = new Point(1068, 586);
             button2.Name = "button2";
             button2.Size = new Size(93, 33);
             button2.TabIndex = 25;
@@ -332,7 +323,7 @@
             // btnVerCaixa
             // 
             btnVerCaixa.Font = new Font("Segoe UI Black", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnVerCaixa.Location = new Point(573, 539);
+            btnVerCaixa.Location = new Point(941, 408);
             btnVerCaixa.Name = "btnVerCaixa";
             btnVerCaixa.Size = new Size(211, 33);
             btnVerCaixa.TabIndex = 30;
@@ -340,15 +331,71 @@
             btnVerCaixa.UseVisualStyleBackColor = true;
             btnVerCaixa.Click += btnVerCaixa_Click_1;
             // 
+            // btnfecharcaixa
+            // 
+            btnfecharcaixa.Font = new Font("Segoe UI Black", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            btnfecharcaixa.Location = new Point(941, 507);
+            btnfecharcaixa.Name = "btnfecharcaixa";
+            btnfecharcaixa.Size = new Size(211, 33);
+            btnfecharcaixa.TabIndex = 31;
+            btnfecharcaixa.Text = "FECHAR CAIXA";
+            btnfecharcaixa.UseVisualStyleBackColor = true;
+            btnfecharcaixa.Click += button3_Click;
+            // 
+            // btnabrircaixa
+            // 
+            btnabrircaixa.Font = new Font("Segoe UI Black", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            btnabrircaixa.Location = new Point(941, 457);
+            btnabrircaixa.Name = "btnabrircaixa";
+            btnabrircaixa.Size = new Size(211, 33);
+            btnabrircaixa.TabIndex = 32;
+            btnabrircaixa.Text = "ABRIR CAIXA";
+            btnabrircaixa.UseVisualStyleBackColor = true;
+            btnabrircaixa.Click += btnabrircaixa_Click;
+            // 
+            // BtnCancelar
+            // 
+            BtnCancelar.Font = new Font("Segoe UI Black", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            BtnCancelar.Location = new Point(953, 194);
+            BtnCancelar.Name = "BtnCancelar";
+            BtnCancelar.Size = new Size(199, 31);
+            BtnCancelar.TabIndex = 33;
+            BtnCancelar.Text = "CANCELAR";
+            BtnCancelar.UseVisualStyleBackColor = true;
+            BtnCancelar.Click += button1_Click;
+            // 
+            // txtDesconto
+            // 
+            txtDesconto.Location = new Point(197, 482);
+            txtDesconto.Name = "txtDesconto";
+            txtDesconto.Size = new Size(77, 23);
+            txtDesconto.TabIndex = 34;
+            // 
+            // BtnAplicar
+            // 
+            BtnAplicar.Cursor = Cursors.Hand;
+            BtnAplicar.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            BtnAplicar.Location = new Point(301, 475);
+            BtnAplicar.Name = "BtnAplicar";
+            BtnAplicar.Size = new Size(93, 33);
+            BtnAplicar.TabIndex = 35;
+            BtnAplicar.Text = "APLICAR";
+            BtnAplicar.UseVisualStyleBackColor = true;
+            BtnAplicar.Click += BtnAplicar_Click;
+            // 
             // formscaixa
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveBorder;
             ClientSize = new Size(1183, 644);
+            Controls.Add(BtnAplicar);
+            Controls.Add(txtDesconto);
+            Controls.Add(BtnCancelar);
+            Controls.Add(btnabrircaixa);
+            Controls.Add(btnfecharcaixa);
             Controls.Add(btnVerCaixa);
             Controls.Add(lblTroco);
-            Controls.Add(lblDesconto);
             Controls.Add(label3);
             Controls.Add(txtValorPagamento);
             Controls.Add(BtnBuscar);
@@ -388,7 +435,7 @@
         private ListBox listCarrinho;
         private NumericUpDown numericUpDown1;
         private ComboBox cmbFormasDePagamento;
-        private Button button1;
+        private Button btnabrircaixa;
         private Label label2;
         private Label lblValorFinal;
         private ComboBox cmbprodutos;
@@ -396,7 +443,6 @@
         private Label label5;
         private Label label6;
         private Label lblValorTotal;
-        private Label lblDesconto;
         private Button btnRelatorio;
         private PictureBox pictureBox5;
         private PictureBox pictureBox6;
@@ -413,5 +459,9 @@
         private Label lblTroco;
         private DateTimePicker dateTimePicker1;
         private Button btnVerCaixa;
+        private Button btnfecharcaixa;
+        private Button BtnCancelar;
+        private TextBox txtDesconto;
+        private Button BtnAplicar;
     }
 }

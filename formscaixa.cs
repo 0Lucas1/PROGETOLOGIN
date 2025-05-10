@@ -88,74 +88,36 @@ namespace PROGETOLOGIN
         // Método para atualizar o carrinho e exibir o valor total
         private void AtualizarCarrinho()
         {
-            listCarrinho.Items.Clear(); // Limpar a listBox
+            // Limpar a listBox para garantir que não haja itens antigos
+            listCarrinho.Items.Clear();
 
+            // Variável para calcular o total sem desconto
             decimal TotalSemDesconto = 0;
 
-            // Se o carrinho estiver vazio
+            // Verificar se o carrinho está vazio
             if (carrinho.Count == 0)
             {
                 MessageBox.Show("Carrinho vazio!");
                 lblValorTotal.Text = "Total sem desconto: R$ 0,00";
                 lblValorFinal.Text = "R$ 0,00";
-                lblDesconto.Text = "Sem desconto";
                 return;
             }
 
             // Exibir os produtos no carrinho
             foreach (var item in carrinho)
             {
-                listCarrinho.Items.Add($"{item.Nome_Produto} - {item.Estoque}x R$ {item.Valor_Venda:F2}"); // Adiciona na ListBox
+                // Adiciona o produto na listBox com o nome, quantidade e preço
+                listCarrinho.Items.Add($"{item.Nome_Produto} - {item.Estoque}x R$ {item.Valor_Venda:F2}");
+
+                // Calcular o total sem desconto
                 TotalSemDesconto += item.Estoque * item.Valor_Venda;
             }
 
-            // Exibir o total sem desconto
+            // Exibir o total sem desconto na label
             lblValorTotal.Text = $"Total sem desconto: R$ {TotalSemDesconto:F2}";
 
-            // Aplicar o desconto, se necessário
-            decimal TotalComDesconto = TotalSemDesconto;
-            if (TotalComDesconto > 100)
-            {
-                TotalComDesconto *= 0.9M;
-                lblDesconto.Text = "Desconto aplicado: 10%";
-            }
-            else
-            {
-                lblDesconto.Text = "Sem desconto";
-            }
-
-            // Exibir o valor final
-            lblValorFinal.Text = $"R$ {TotalComDesconto:F2}";
-        }
-
-        // Classe para acesso aos produtos no banco de dados
-        public class ProdutosDAO
-        {
-            public List<Produto> ListarPorCategoria(string categoria)
-            {
-                List<Produto> produtos = new List<Produto>();
-
-                using (var conn = Conexao.Obterconexao())
-                {
-                    string sql = "SELECT id_produto, Nome_Produto, Valor_Venda, Quantidade FROM Estoque WHERE Categoria = @categoria";
-                    MySqlCommand cmd = new MySqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@categoria", categoria);
-                    MySqlDataReader reader = cmd.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        produtos.Add(new Produto()
-                        {
-                            ID_Produto = reader.GetInt32("id_produto"),
-                            Nome_Produto = reader.GetString("Nome_Produto"),
-                            Valor_Venda = reader.GetDecimal("Valor_Venda"),
-                            Estoque = reader.GetInt32("Quantidade")
-                        });
-                    }
-                }
-
-                return produtos;
-            }
+            // Exibir o valor final (por enquanto sem desconto)
+            lblValorFinal.Text = $"R$ {TotalSemDesconto:F2}";
         }
 
         private void btnAdicionar_Click_1(object sender, EventArgs e)
@@ -217,9 +179,24 @@ namespace PROGETOLOGIN
         }
 
         private void BTNPAGAR_Click(object sender, EventArgs e)
-        
-          
+
+
         {
+            // Verificar se o caixa está aberto
+            using (var conn = Conexao.Obterconexao())
+            {
+                string queryCaixaAberto = "SELECT COUNT(*) FROM caixa WHERE status = 'Aberto'";
+                MySqlCommand cmdCheckCaixa = new MySqlCommand(queryCaixaAberto, conn);
+                int caixaAbertoCount = Convert.ToInt32(cmdCheckCaixa.ExecuteScalar());
+
+                if (caixaAbertoCount == 0)
+                {
+                    MessageBox.Show("Nenhum caixa está aberto. Por favor, abra um caixa antes de realizar o pagamento.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return; // Se o caixa não estiver aberto, interrompe o pagamento
+                }
+            }
+
+            // Continuação do código de pagamento...
             if (carrinho.Count == 0)
             {
                 MessageBox.Show("Carrinho vazio.");
@@ -283,8 +260,8 @@ namespace PROGETOLOGIN
 
                             // Comando para inserir a venda na tabela 'vendas'
                             string insertSql = @"INSERT INTO vendas 
-                    (ID_Produto, Quantidade, Valor_Total, Data_Venda, ID_Usuario) 
-                    VALUES (@id_produto, @quantidade, @valor_total, @data_venda, @id_usuario)";
+            (ID_Produto, Quantidade, Valor_Total, Data_Venda, ID_Usuario) 
+            VALUES (@id_produto, @quantidade, @valor_total, @data_venda, @id_usuario)";
 
                             MySqlCommand cmd = new MySqlCommand(insertSql, conn);
                             cmd.Parameters.AddWithValue("@id_produto", item.ID_Produto);
@@ -296,8 +273,8 @@ namespace PROGETOLOGIN
 
                             // Baixar o estoque após a venda
                             string updateEstoqueSql = @"UPDATE Estoque 
-                                                SET Quantidade = Quantidade - @quantidade
-                                                WHERE ID_Produto = @id_produto";
+                                        SET Quantidade = Quantidade - @quantidade
+                                        WHERE ID_Produto = @id_produto";
 
                             MySqlCommand cmdUpdateEstoque = new MySqlCommand(updateEstoqueSql, conn);
                             cmdUpdateEstoque.Parameters.AddWithValue("@quantidade", item.Estoque);
@@ -318,7 +295,6 @@ namespace PROGETOLOGIN
                     listCarrinho.Items.Clear();
                     lblValorTotal.Text = "Total sem desconto: R$ 0,00";
                     lblValorFinal.Text = "R$ 0,00";
-                    lblDesconto.Text = "Sem desconto";
                     txtValorPagamento.Text = "";
                     lblTroco.Text = "";
                     cmbFormasDePagamento.SelectedIndex = -1;
@@ -339,6 +315,8 @@ namespace PROGETOLOGIN
 
 
 
+
+
         private void btnRelatorio_Click(object sender, EventArgs e)
         {
             Relatório relatorio = new Relatório();
@@ -350,38 +328,90 @@ namespace PROGETOLOGIN
         {
             try
             {
-                // Conexão com o banco de dados
                 using (var conn = Conexao.Obterconexao())
                 {
-                    // Consulta SQL para calcular o faturamento e lucro
-                    string queryCaixa = @"
-                SELECT SUM(v.quantidade * e.Valor_Venda) AS Faturamento,
-                       SUM((e.Valor_Venda - e.Valor_Compra) * v.quantidade) AS Lucro
-                FROM vendas v
-                JOIN Estoque e ON v.ID_Produto = e.ID_Produto";
+                    // Obter o nome do usuário logado (somente da tabela 'Usuarios')
+                    string nomeUsuarioQuery = "SELECT Usuario FROM Usuarios WHERE ID = @id_usuario";
+                    MySqlCommand cmdNomeUsuario = new MySqlCommand(nomeUsuarioQuery, conn);
+                    cmdNomeUsuario.Parameters.AddWithValue("@id_usuario", LOGIN.IDUsuarioLogado); // ID do usuário logado
+                    string nomeUsuario = cmdNomeUsuario.ExecuteScalar()?.ToString();
 
-                    MySqlCommand cmdCaixa = new MySqlCommand(queryCaixa, conn);
-                    MySqlDataReader reader = cmdCaixa.ExecuteReader();
-
-                    if (reader.Read())
+                    if (string.IsNullOrEmpty(nomeUsuario)) // Verifica se o usuário foi encontrado
                     {
-                        decimal faturamento = reader.IsDBNull(0) ? 0 : reader.GetDecimal(0);
-                        decimal lucro = reader.IsDBNull(1) ? 0 : reader.GetDecimal(1);
+                        MessageBox.Show("Usuário não encontrado ou inválido.");
+                        return;
+                    }
 
-                        // Exibir os valores de Caixa, Faturamento e Lucro na MessageBox
-                        MessageBox.Show($"Caixa Atual: R$ {faturamento:C}\nFaturamento Total: R$ {faturamento:C}\nLucro Acumulado: R$ {lucro:C}",
-                                        "Informações do Caixa", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    // Consulta para obter a data de abertura do último caixa aberto
+                    string queryCaixaAberto = @"
+        SELECT ID_Caixa, Data_Abertura 
+        FROM caixa 
+        WHERE status = 'Aberto' 
+        ORDER BY Data_Abertura DESC 
+        LIMIT 1";
+
+                    MySqlCommand cmdCaixaAberto = new MySqlCommand(queryCaixaAberto, conn);
+                    MySqlDataReader readerCaixa = cmdCaixaAberto.ExecuteReader();
+
+                    DateTime dataAbertura;
+
+                    if (readerCaixa.Read())
+                    {
+                        dataAbertura = readerCaixa.GetDateTime("Data_Abertura");
                     }
                     else
                     {
-                        MessageBox.Show("Não há vendas registradas para mostrar.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        // Nenhum caixa aberto encontrado
+                        MessageBox.Show("Nenhum caixa aberto encontrado.", "Informação", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
                     }
+
+                    readerCaixa.Close();
+
+                    // Agora buscar faturamento e lucro das vendas feitas após a abertura do caixa
+                    string queryValores = @"
+        SELECT 
+            SUM(v.quantidade * e.Valor_Venda) AS Faturamento,
+            SUM((e.Valor_Venda - e.Valor_Compra) * v.quantidade) AS Lucro
+        FROM vendas v
+        JOIN Estoque e ON v.ID_Produto = e.ID_Produto
+        WHERE v.Data_Venda >= @dataAbertura";
+
+                    MySqlCommand cmdValores = new MySqlCommand(queryValores, conn);
+                    cmdValores.Parameters.AddWithValue("@dataAbertura", dataAbertura);
+
+                    decimal faturamento = 0;
+                    decimal lucro = 0;
+
+                    using (MySqlDataReader readerValores = cmdValores.ExecuteReader())
+                    {
+                        if (readerValores.Read())
+                        {
+                            faturamento = readerValores.IsDBNull(0) ? 0 : readerValores.GetDecimal(0);
+                            lucro = readerValores.IsDBNull(1) ? 0 : readerValores.GetDecimal(1);
+                        }
+                    }
+
+                    // Exibir as informações do caixa
+                    MessageBox.Show($"Caixa Aberto Desde: {dataAbertura}\n" +
+                                    $"Faturamento: R$ {faturamento:C}\n" +
+                                    $"Lucro: R$ {lucro:C}\n" +
+                                    $"Usuário Logado: {nomeUsuario}",
+                                    "Informações do Caixa", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Erro ao acessar o banco de dados: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+
+
+
+
+
+
+
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -390,8 +420,246 @@ namespace PROGETOLOGIN
             login.Show();
             this.Hide();
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Pergunta ao usuário se ele deseja realmente fechar o caixa
+                DialogResult dialogResult = MessageBox.Show("Você tem certeza que deseja fechar o caixa?", "Fechar Caixa", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (dialogResult == DialogResult.No)
+                {
+                    // Se o usuário escolher "Não", o processo é interrompido
+                    return;
+                }
+
+                // Conexão com o banco de dados
+                using (var conn = Conexao.Obterconexao())
+                {
+                    // Verificar se existe um caixa aberto
+                    string queryCaixaAberto = "SELECT COUNT(*) FROM caixa WHERE status = 'Aberto' ORDER BY Data_Abertura DESC LIMIT 1";
+                    MySqlCommand cmdCaixaAberto = new MySqlCommand(queryCaixaAberto, conn);
+                    int caixaAberto = Convert.ToInt32(cmdCaixaAberto.ExecuteScalar());
+
+                    if (caixaAberto == 0)
+                    {
+                        // Se não houver caixa aberto, exibe uma mensagem de erro
+                        MessageBox.Show("Não há caixa aberto para ser fechado.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    // Consultar o faturamento e lucro
+                    string queryCaixa = @"
+            SELECT SUM(v.quantidade * e.Valor_Venda) AS Faturamento,
+                   SUM((e.Valor_Venda - e.Valor_Compra) * v.quantidade) AS Lucro
+            FROM vendas v
+            JOIN Estoque e ON v.ID_Produto = e.ID_Produto
+            WHERE v.Data_Venda >= (SELECT Data_Abertura FROM caixa WHERE status = 'Aberto' ORDER BY Data_Abertura DESC LIMIT 1)";
+
+                    MySqlCommand cmdCaixa = new MySqlCommand(queryCaixa, conn);
+                    MySqlDataReader reader = cmdCaixa.ExecuteReader();
+
+                    decimal faturamento = 0;
+                    decimal lucro = 0;
+
+                    if (reader.Read())
+                    {
+                        faturamento = reader.IsDBNull(0) ? 0 : reader.GetDecimal(0);
+                        lucro = reader.IsDBNull(1) ? 0 : reader.GetDecimal(1);
+                    }
+                    reader.Close();
+
+                    // Atualizar o status do caixa para 'Fechado' e inserir os valores do fechamento
+                    string queryFecharCaixa = @"
+            UPDATE caixa 
+            SET status = 'Fechado', 
+                Data_Fechamento = @Data_Fechamento, 
+                Saldo = @Saldo, 
+                Faturamento = @Faturamento, 
+                Lucro = @Lucro 
+            WHERE status = 'Aberto'";
+
+                    MySqlCommand cmdFecharCaixa = new MySqlCommand(queryFecharCaixa, conn);
+                    cmdFecharCaixa.Parameters.AddWithValue("@Data_Fechamento", DateTime.Now); // Data e Hora do fechamento
+                    cmdFecharCaixa.Parameters.AddWithValue("@Saldo", faturamento); // O saldo é o faturamento
+                    cmdFecharCaixa.Parameters.AddWithValue("@Faturamento", faturamento);
+                    cmdFecharCaixa.Parameters.AddWithValue("@Lucro", lucro);
+
+                    // Executa o fechamento do caixa
+                    cmdFecharCaixa.ExecuteNonQuery();
+
+                    // Exibe mensagem de sucesso
+                    MessageBox.Show("Caixa fechado e registrado com sucesso!", "Fechamento de Caixa", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao acessar o banco de dados: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+
+        }
+
+
+        private void btnabrircaixa_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (var conn = Conexao.Obterconexao())
+                {
+                    // Obter o nome do usuário logado corretamente
+                    string nomeUsuarioQuery = "SELECT Usuario FROM Usuarios WHERE ID = @id_usuario";
+                    MySqlCommand cmdNomeUsuario = new MySqlCommand(nomeUsuarioQuery, conn);
+                    cmdNomeUsuario.Parameters.AddWithValue("@id_usuario", LOGIN.IDUsuarioLogado); // ID do usuário logado (do login)
+
+                    // Executa a consulta e obtém o nome do usuário
+                    string nomeUsuario = cmdNomeUsuario.ExecuteScalar()?.ToString();
+
+                    // Verifica se o nome do usuário foi encontrado
+                    if (string.IsNullOrEmpty(nomeUsuario)) // Se o nome não for encontrado, exibe erro
+                    {
+                        MessageBox.Show("Usuário não encontrado ou inválido.");
+                        return;
+                    }
+
+                    // Verificar se já existe um caixa aberto
+                    string queryCheck = "SELECT COUNT(*) FROM caixa WHERE status = 'Aberto'";
+                    MySqlCommand cmdCheck = new MySqlCommand(queryCheck, conn);
+                    int count = Convert.ToInt32(cmdCheck.ExecuteScalar());
+
+                    if (count == 0)
+                    {
+                        DateTime dataAbertura = DateTime.Now;
+
+                        // Insere o novo caixa como aberto
+                        string queryInsert = @"
+            INSERT INTO caixa 
+            (Status, Data_Abertura, Saldo, Faturamento, Lucro, Usuario_Abertura) 
+            VALUES 
+            ('Aberto', @DataAbertura, 0, 0, 0, @Usuario)";
+
+                        MySqlCommand cmdInsert = new MySqlCommand(queryInsert, conn);
+                        cmdInsert.Parameters.AddWithValue("@DataAbertura", dataAbertura);
+                        cmdInsert.Parameters.AddWithValue("@Usuario", nomeUsuario); // Nome do usuário logado
+                        cmdInsert.ExecuteNonQuery();
+
+                        // Consulta o faturamento e lucro a partir desse momento (por enquanto será zero)
+                        decimal faturamento = 0;
+                        decimal lucro = 0;
+
+                        string queryLucro = @"
+            SELECT 
+                SUM(v.quantidade * e.Valor_Venda) AS Faturamento,
+                SUM((e.Valor_Venda - e.Valor_Compra) * v.quantidade) AS Lucro
+            FROM vendas v
+            JOIN Estoque e ON v.ID_Produto = e.ID_Produto
+            WHERE v.Data_Venda >= @DataAbertura";
+
+                        MySqlCommand cmdLucro = new MySqlCommand(queryLucro, conn);
+                        cmdLucro.Parameters.AddWithValue("@DataAbertura", dataAbertura);
+
+                        using (MySqlDataReader reader = cmdLucro.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                faturamento = reader.IsDBNull(0) ? 0 : reader.GetDecimal(0);
+                                lucro = reader.IsDBNull(1) ? 0 : reader.GetDecimal(1);
+                            }
+                        }
+
+                        MessageBox.Show(
+                            $"Caixa aberto com sucesso!\n\n" +
+                            $"Data de Abertura: {dataAbertura}\n" +
+                            $"Usuário: {nomeUsuario}\n" +
+                            $"Faturamento Atual: R$ {faturamento:C}\n" +
+                            $"Lucro Atual: R$ {lucro:C}",
+                            "Caixa Aberto", MessageBoxButtons.OK, MessageBoxIcon.Information
+                        );
+                    }
+                    else
+                    {
+                        MessageBox.Show("Já existe um caixa aberto!", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao abrir o caixa: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            // Itera de trás pra frente para evitar problemas de índice ao remover
+            for (int i = listCarrinho.SelectedIndices.Count - 1; i >= 0; i--)
+            {
+                int index = listCarrinho.SelectedIndices[i];
+
+                // Remove da lista visual (ListBox)
+                listCarrinho.Items.RemoveAt(index);
+
+                // Remove da lista lógica (carrinho)
+                carrinho.RemoveAt(index);
+            }
+
+            // Atualiza os valores depois da remoção
+            AtualizarCarrinho(); // Chama o método que recalcula total e atualiza labels
+        }
+
+        private void BtnAplicar_Click(object sender, EventArgs e)
+        {
+            // Verificar se o carrinho está vazio
+            if (carrinho.Count == 0)
+            {
+                MessageBox.Show("Carrinho vazio!");
+                return;
+            }
+
+            // Calcular o total sem desconto
+            decimal TotalSemDesconto = 0;
+            foreach (var item in carrinho)
+            {
+                TotalSemDesconto += item.Estoque * item.Valor_Venda;
+            }
+
+            // Exibir o total sem desconto
+            lblValorTotal.Text = $"Total sem desconto: R$ {TotalSemDesconto:F2}";
+
+            // Obter o valor do desconto em porcentagem
+            if (decimal.TryParse(txtDesconto.Text, out decimal descontoPercentual))
+            {
+                // Verificar se a porcentagem está entre 0 e 100
+                if (descontoPercentual >= 0 && descontoPercentual <= 100)
+                {
+                    // Calcular o valor de desconto em reais
+                    decimal valorDesconto = (descontoPercentual / 100) * TotalSemDesconto;
+
+                    // Calcular o total com desconto
+                    decimal TotalComDesconto = TotalSemDesconto - valorDesconto;
+
+                    // Exibir o total com desconto
+                    lblValorFinal.Text = $"R$ {TotalComDesconto:F2}";
+
+                    // Exibir mensagem de confirmação
+                    MessageBox.Show($"Desconto de {descontoPercentual:F2}% aplicado! Valor Descontado: R$ {valorDesconto:F2}");
+                }
+                else
+                {
+                    MessageBox.Show("Por favor, insira uma porcentagem de desconto entre 0 e 100.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Por favor, insira um valor de desconto válido em porcentagem.");
+            }
+        }
     }
 }
+
+
+
 
 
 
