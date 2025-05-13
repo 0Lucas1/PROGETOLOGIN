@@ -24,6 +24,7 @@ namespace PROGETOLOGIN
             InitializeComponent();
             CarregarCategorias();
             CarregarFormasPagamento();
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Encerramento);
         }
 
         // Carregar categorias no ComboBox
@@ -653,6 +654,31 @@ namespace PROGETOLOGIN
             else
             {
                 MessageBox.Show("Por favor, insira um valor de desconto válido em porcentagem.");
+            }
+        }
+        private void Encerramento(object sender, FormClosingEventArgs e)
+        {
+            // Se o motivo do fechamento for o "X" (fechamento manual do usuário)
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                // Exibe uma caixa de mensagem perguntando se o usuário tem certeza de que quer sair
+                DialogResult result = MessageBox.Show("Tem certeza de que deseja sair?",
+                                                      "Confirmar saída",
+                                                      MessageBoxButtons.YesNo,
+                                                      MessageBoxIcon.Question);
+
+                // Se o usuário clicar em "Sim", o formulário será fechado
+                if (result == DialogResult.Yes)
+                {
+                    // Encerrando completamente a aplicação
+                    Application.Exit();
+                    e.Cancel = false;  // Confirma o fechamento do formulário (apesar de Application.Exit já finalizar tudo)
+                }
+                else
+                {
+                    // Caso contrário, o fechamento é cancelado
+                    e.Cancel = true;
+                }
             }
         }
     }

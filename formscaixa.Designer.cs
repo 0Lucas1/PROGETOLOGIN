@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(formscaixa));
             listCarrinho = new ListBox();
             numericUpDown1 = new NumericUpDown();
             cmbFormasDePagamento = new ComboBox();
@@ -419,6 +420,8 @@
             Controls.Add(listCarrinho);
             Controls.Add(pictureBox6);
             Controls.Add(pictureBox5);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "formscaixa";
             StartPosition = FormStartPosition.CenterScreen;

@@ -18,6 +18,7 @@ namespace ProjetoSGE
         public Administrativo()
         {
             InitializeComponent();
+ 
         }
         private void BTNAcessar_Click(object sender, EventArgs e)
         {
@@ -63,6 +64,31 @@ namespace ProjetoSGE
                 textBox1.PasswordChar = '\0';
                 btnmostra.Text = "Esconder";
                 senhaVisivel = true;
+            }
+        }
+        private void Encerramento(object sender, FormClosingEventArgs e)
+        {
+            // Se o motivo do fechamento for o "X" (fechamento manual do usuário)
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                // Exibe uma caixa de mensagem perguntando se o usuário tem certeza de que quer sair
+                DialogResult result = MessageBox.Show("Tem certeza de que deseja sair?",
+                                                      "Confirmar saída",
+                                                      MessageBoxButtons.YesNo,
+                                                      MessageBoxIcon.Question);
+
+                // Se o usuário clicar em "Sim", o formulário será fechado
+                if (result == DialogResult.Yes)
+                {
+                    // Encerrando completamente a aplicação
+                    Application.Exit();
+                    e.Cancel = false;  // Confirma o fechamento do formulário (apesar de Application.Exit já finalizar tudo)
+                }
+                else
+                {
+                    // Caso contrário, o fechamento é cancelado
+                    e.Cancel = true;
+                }
             }
         }
     }

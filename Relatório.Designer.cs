@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Relatório));
             dataGridViewRelatorio = new DataGridView();
             label1 = new Label();
             BTNsalvar = new Button();
@@ -134,6 +135,7 @@
             Controls.Add(label1);
             Controls.Add(dataGridViewRelatorio);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "Relatório";
             StartPosition = FormStartPosition.CenterScreen;

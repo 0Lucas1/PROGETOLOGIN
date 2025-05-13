@@ -1,13 +1,11 @@
-﻿using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Forms;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using MySql.Data.MySqlClient;
 
 namespace PROGETOLOGIN
 {
@@ -25,7 +23,7 @@ namespace PROGETOLOGIN
             // Evento do botão Filtrar
             btnFiltrar.Click += btnFiltrar_Click;
 
-            // Aqui está a linha que expande a tabela!
+            // Expande a tabela automaticamente
             dataGridViewRelatorio.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
@@ -33,19 +31,21 @@ namespace PROGETOLOGIN
         {
             DeletarVendasAntigas();
             DateTime hoje = DateTime.Today;
-            CarregarRelatorio(hoje, hoje);
+            CarregarRelatorio(hoje, hoje.AddDays(1).AddSeconds(-1)); // Inclui o dia inteiro
         }
 
         private void btnFiltrar_Click(object sender, EventArgs e)
         {
-            DateTime dataInicio = dtInicio.Value.Date;
-            DateTime dataFim = dtFIM.Value.Date;
+            DateTime dataInicio = dtInicio.Value.Date;  // Data sem hora (meia-noite)
+            DateTime dataFim = dtFIM.Value.Date.AddDays(1).AddSeconds(-1);  // Final do dia (23:59:59)
 
             if (dataInicio > dataFim)
             {
                 MessageBox.Show("A data inicial não pode ser maior que a data final.");
                 return;
             }
+
+            
 
             CarregarRelatorio(dataInicio, dataFim);
         }
@@ -56,26 +56,32 @@ namespace PROGETOLOGIN
             {
                 using (var conn = Conexao.Obterconexao())
                 {
+                    // Ajusta as datas de início e fim para garantir que pegaremos o intervalo completo
                     string query = @"
-                        SELECT 
-                            v.ID_Venda,
-                            e.Nome_Produto,
-                            v.Quantidade,
-                            v.Valor_Total,
-                            v.Data_Venda,
-                            u.Usuario AS Nome_Usuario
-                        FROM 
-                            vendas v
-                        JOIN 
-                            Estoque e ON v.ID_Produto = e.ID_Produto
-                        JOIN 
-                            Usuarios u ON v.ID_Usuario = u.ID
-                        WHERE 
-                            DATE(v.Data_Venda) BETWEEN @inicio AND @fim;";
+                SELECT 
+                    v.ID_Venda,
+                    e.Nome_Produto,
+                    v.Quantidade,
+                    v.Valor_Total,
+                    v.Data_Venda,
+                    u.Usuario AS Nome_Usuario
+                FROM 
+                    vendas v
+                JOIN 
+                    Estoque e ON v.ID_Produto = e.ID_Produto
+                JOIN 
+                    Usuarios u ON v.ID_Usuario = u.ID
+                WHERE 
+                    v.Data_Venda >= @inicio 
+                    AND v.Data_Venda <= @fim
+                ORDER BY 
+                    v.Data_Venda"; // Ordena para mostrar de forma cronológica
 
                     MySqlCommand cmd = new MySqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@inicio", dataInicio.ToString("yyyy-MM-dd"));
-                    cmd.Parameters.AddWithValue("@fim", dataFim.ToString("yyyy-MM-dd"));
+
+                    // Ajuste para garantir o formato correto de hora
+                    cmd.Parameters.AddWithValue("@inicio", dataInicio.ToString("yyyy-MM-dd 00:00:00"));  // Define a hora para 00:00:00
+                    cmd.Parameters.AddWithValue("@fim", dataFim.ToString("yyyy-MM-dd 23:59:59"));  // Define a hora para 23:59:59
 
                     MySqlDataReader reader = cmd.ExecuteReader();
                     DataTable tabela = new DataTable();
@@ -84,13 +90,15 @@ namespace PROGETOLOGIN
                     dataGridViewRelatorio.DataSource = tabela;
                 }
 
-                MessageBox.Show("Relatório filtrado com sucesso!");
+                // Mensagem de sucesso após o relatório ser carregado
+                MessageBox.Show("Relatório carregado com sucesso!");
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Erro ao gerar relatório: " + ex.Message);
             }
         }
+
         private void DeletarVendasAntigas()
         {
             try
@@ -98,8 +106,8 @@ namespace PROGETOLOGIN
                 using (var conn = Conexao.Obterconexao())
                 {
                     string query = @"
-                DELETE FROM vendas 
-                WHERE Data_Venda < DATE_SUB(CURDATE(), INTERVAL 2 YEAR);";
+                        DELETE FROM vendas 
+                        WHERE Data_Venda < DATE_SUB(CURDATE(), INTERVAL 2 YEAR);";
 
                     MySqlCommand cmd = new MySqlCommand(query, conn);
                     int linhasAfetadas = cmd.ExecuteNonQuery();
@@ -118,34 +126,36 @@ namespace PROGETOLOGIN
 
         private void BTNsalvar_Click(object sender, EventArgs e)
         {
-            // Criar um diálogo para escolher onde salvar o arquivo PDF
-            SaveFileDialog saveFile = new SaveFileDialog();
-            saveFile.Filter = "PDF Files|*.pdf";
-            saveFile.Title = "Salvar Relatório como PDF";
-            saveFile.FileName = "relatorio_vendas.pdf";
+            SaveFileDialog saveFile = new SaveFileDialog
+            {
+                Filter = "PDF Files|*.pdf",
+                Title = "Salvar Relatório como PDF",
+                FileName = "relatorio_vendas.pdf"
+            };
 
             if (saveFile.ShowDialog() != DialogResult.OK)
                 return;
 
-            // Criação do documento PDF
             using (FileStream fs = new FileStream(saveFile.FileName, FileMode.Create, FileAccess.Write, FileShare.None))
             {
-                iTextSharp.text.Document doc = new iTextSharp.text.Document(iTextSharp.text.PageSize.A4, 20f, 20f, 20f, 20f);
-                iTextSharp.text.pdf.PdfWriter.GetInstance(doc, fs);
+                Document doc = new Document(PageSize.A4, 20f, 20f, 20f, 20f);
+                PdfWriter.GetInstance(doc, fs);
                 doc.Open();
 
-                // Título do relatório
-                var titulo = new iTextSharp.text.Paragraph("Relatório de Vendas", new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 16f, iTextSharp.text.Font.BOLD));
-                titulo.Alignment = iTextSharp.text.Element.ALIGN_CENTER;
-                titulo.SpacingAfter = 20f;
+                var titulo = new iTextSharp.text.Paragraph("Relatório de Vendas", new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 16f, iTextSharp.text.Font.BOLD))
+                {
+                    Alignment = iTextSharp.text.Element.ALIGN_CENTER,
+                    SpacingAfter = 20f
+                };
                 doc.Add(titulo);
 
-                // Tabela com as colunas do relatório
-                iTextSharp.text.pdf.PdfPTable tabela = new iTextSharp.text.pdf.PdfPTable(6);
-                tabela.WidthPercentage = 100;
-                tabela.SetWidths(new float[] { 10f, 25f, 15f, 20f, 20f, 10f }); // Ajuste das larguras
+                PdfPTable tabela = new PdfPTable(6)
+                {
+                    WidthPercentage = 100
+                };
+                tabela.SetWidths(new float[] { 10f, 25f, 15f, 20f, 20f, 10f });
 
-                // Cabeçalho da tabela
+                // Cabeçalhos
                 tabela.AddCell("ID Venda");
                 tabela.AddCell("Produto");
                 tabela.AddCell("Quantidade");
@@ -153,23 +163,19 @@ namespace PROGETOLOGIN
                 tabela.AddCell("Data Venda");
                 tabela.AddCell("Usuário");
 
-                // Preencher a tabela com os dados do DataGridView
                 foreach (DataGridViewRow row in dataGridViewRelatorio.Rows)
                 {
-                    if (row.IsNewRow) continue; // Ignorar a linha em branco no final
+                    if (row.IsNewRow) continue;
 
-                    tabela.AddCell(row.Cells["ID_Venda"].Value.ToString());
-                    tabela.AddCell(row.Cells["Nome_Produto"].Value.ToString());
-                    tabela.AddCell(row.Cells["Quantidade"].Value.ToString());
-                    tabela.AddCell(row.Cells["Valor_Total"].Value.ToString());
-                    tabela.AddCell(row.Cells["Data_Venda"].Value.ToString());
-                    tabela.AddCell(row.Cells["Nome_Usuario"].Value.ToString());
+                    tabela.AddCell(row.Cells["ID_Venda"].Value?.ToString() ?? "");
+                    tabela.AddCell(row.Cells["Nome_Produto"].Value?.ToString() ?? "");
+                    tabela.AddCell(row.Cells["Quantidade"].Value?.ToString() ?? "");
+                    tabela.AddCell(row.Cells["Valor_Total"].Value?.ToString() ?? "");
+                    tabela.AddCell(row.Cells["Data_Venda"].Value?.ToString() ?? "");
+                    tabela.AddCell(row.Cells["Nome_Usuario"].Value?.ToString() ?? "");
                 }
 
-                // Adicionar a tabela no documento PDF
                 doc.Add(tabela);
-
-                // Fechar o documento PDF
                 doc.Close();
             }
 

@@ -19,6 +19,9 @@ namespace PROGETOLOGIN
         {
             InitializeComponent();
             lbltxt.Text = "Acesso Administrativo";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Encerramento);
+
+
         }
 
         private void BTNAcessar_Click(object sender, EventArgs e)
@@ -35,6 +38,8 @@ namespace PROGETOLOGIN
                 var reader = cmd.ExecuteReader();
                 if (reader.Read())
                 {
+                    LOGIN login = new LOGIN();
+                    login.Close();
                     MessageBox.Show("Login Realizado com sucesso");
                     MenuCadastro menu = new MenuCadastro();
                     menu.Show();
@@ -69,5 +74,31 @@ namespace PROGETOLOGIN
                 senhaVisivel = true;
             }
         }
+        private void Encerramento(object sender, FormClosingEventArgs e)
+        {
+            // Se o motivo do fechamento for o "X" (fechamento manual do usuário)
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                // Exibe uma caixa de mensagem perguntando se o usuário tem certeza de que quer sair
+                DialogResult result = MessageBox.Show("Tem certeza de que deseja sair?",
+                                                      "Confirmar saída",
+                                                      MessageBoxButtons.YesNo,
+                                                      MessageBoxIcon.Question);
+
+                // Se o usuário clicar em "Sim", o formulário será fechado
+                if (result == DialogResult.Yes)
+                {
+                    // Encerrando completamente a aplicação
+                    Application.Exit();
+                    e.Cancel = false;  // Confirma o fechamento do formulário (apesar de Application.Exit já finalizar tudo)
+                }
+                else
+                {
+                    // Caso contrário, o fechamento é cancelado
+                    e.Cancel = true;
+                }
+            }
+        }
+
     }
 }

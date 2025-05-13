@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormsCadastrar));
             txtemail = new TextBox();
             txtSenha = new TextBox();
             txtCSenha = new TextBox();
@@ -68,33 +69,33 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Stencil", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.ForeColor = Color.FromArgb(255, 128, 0);
             label1.Location = new Point(174, 134);
             label1.Name = "label1";
-            label1.Size = new Size(67, 19);
+            label1.Size = new Size(65, 20);
             label1.TabIndex = 3;
             label1.Text = "Nome :";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new Font("Stencil", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label2.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label2.ForeColor = Color.FromArgb(255, 128, 0);
             label2.Location = new Point(160, 203);
             label2.Name = "label2";
-            label2.Size = new Size(81, 19);
+            label2.Size = new Size(76, 20);
             label2.TabIndex = 4;
             label2.Text = "Senha : ";
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Font = new Font("Stencil", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label3.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label3.ForeColor = Color.FromArgb(255, 128, 0);
             label3.Location = new Point(65, 269);
             label3.Name = "label3";
-            label3.Size = new Size(180, 19);
+            label3.Size = new Size(154, 20);
             label3.TabIndex = 5;
             label3.Text = "Confirmar Senha :";
             // 
@@ -102,7 +103,7 @@
             // 
             btnCadastrar.BackColor = Color.FromArgb(255, 128, 0);
             btnCadastrar.Cursor = Cursors.Hand;
-            btnCadastrar.Font = new Font("Showcard Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnCadastrar.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnCadastrar.ForeColor = Color.Black;
             btnCadastrar.Location = new Point(217, 344);
             btnCadastrar.Name = "btnCadastrar";
@@ -146,7 +147,7 @@
             // 
             BtnDeletar.BackColor = Color.FromArgb(255, 128, 0);
             BtnDeletar.Cursor = Cursors.Hand;
-            BtnDeletar.Font = new Font("Showcard Gothic", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            BtnDeletar.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             BtnDeletar.ForeColor = Color.Black;
             BtnDeletar.Location = new Point(493, 345);
             BtnDeletar.Name = "BtnDeletar";
@@ -175,6 +176,7 @@
             Controls.Add(txtSenha);
             Controls.Add(txtemail);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "FormsCadastrar";
             StartPosition = FormStartPosition.CenterScreen;

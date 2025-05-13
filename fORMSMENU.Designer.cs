@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(fORMSMENU));
             button2 = new Button();
             button1 = new Button();
             SuspendLayout();
@@ -36,11 +37,11 @@
             // 
             button2.BackColor = Color.FromArgb(255, 128, 0);
             button2.DialogResult = DialogResult.Yes;
-            button2.Font = new Font("Bernard MT Condensed", 48F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button2.Font = new Font("Microsoft Sans Serif", 48F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button2.ForeColor = Color.Black;
             button2.Location = new Point(408, 138);
             button2.Name = "button2";
-            button2.Size = new Size(358, 138);
+            button2.Size = new Size(365, 138);
             button2.TabIndex = 1;
             button2.Text = "ESTOQUE";
             button2.UseVisualStyleBackColor = false;
@@ -49,7 +50,7 @@
             // button1
             // 
             button1.BackColor = Color.FromArgb(255, 128, 0);
-            button1.Font = new Font("Bernard MT Condensed", 48F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button1.Font = new Font("Microsoft Sans Serif", 48F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button1.ForeColor = Color.Black;
             button1.Location = new Point(28, 138);
             button1.Name = "button1";
@@ -68,6 +69,7 @@
             Controls.Add(button1);
             Controls.Add(button2);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "fORMSMENU";
             StartPosition = FormStartPosition.CenterScreen;

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ADM));
             TXTADM = new TextBox();
             label1 = new Label();
             label2 = new Label();
@@ -44,7 +45,7 @@
             // 
             TXTADM.Location = new Point(220, 90);
             TXTADM.Name = "TXTADM";
-            TXTADM.Size = new Size(175, 23);
+            TXTADM.Size = new Size(190, 23);
             TXTADM.TabIndex = 0;
             // 
             // label1
@@ -115,7 +116,7 @@
             // 
             TXTSENHA.Location = new Point(220, 151);
             TXTSENHA.Name = "TXTSENHA";
-            TXTSENHA.Size = new Size(175, 23);
+            TXTSENHA.Size = new Size(190, 23);
             TXTSENHA.TabIndex = 1;
             // 
             // btnmostra
@@ -135,7 +136,7 @@
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI Semibold", 11.25F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             label3.ForeColor = Color.FromArgb(255, 128, 0);
-            label3.Location = new Point(251, 27);
+            label3.Location = new Point(220, 27);
             label3.Name = "label3";
             label3.Size = new Size(190, 20);
             label3.TabIndex = 9;
@@ -159,6 +160,7 @@
             Controls.Add(TXTSENHA);
             Controls.Add(TXTADM);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "ADM";
             StartPosition = FormStartPosition.CenterScreen;

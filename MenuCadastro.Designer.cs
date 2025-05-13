@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MenuCadastro));
             button1 = new Button();
             button2 = new Button();
             SuspendLayout();
@@ -35,11 +36,11 @@
             // button1
             // 
             button1.BackColor = Color.FromArgb(255, 128, 0);
-            button1.Font = new Font("Bernard MT Condensed", 48F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button1.Font = new Font("Microsoft Sans Serif", 48F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             button1.ForeColor = Color.Black;
-            button1.Location = new Point(174, 69);
+            button1.Location = new Point(83, 69);
             button1.Name = "button1";
-            button1.Size = new Size(480, 138);
+            button1.Size = new Size(619, 138);
             button1.TabIndex = 3;
             button1.Text = "USUÁRIO";
             button1.UseVisualStyleBackColor = false;
@@ -49,11 +50,11 @@
             // 
             button2.BackColor = Color.FromArgb(255, 128, 0);
             button2.DialogResult = DialogResult.Yes;
-            button2.Font = new Font("Bernard MT Condensed", 48F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button2.Font = new Font("Microsoft Sans Serif", 48F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             button2.ForeColor = Color.Black;
-            button2.Location = new Point(174, 242);
+            button2.Location = new Point(83, 258);
             button2.Name = "button2";
-            button2.Size = new Size(480, 138);
+            button2.Size = new Size(619, 138);
             button2.TabIndex = 4;
             button2.Text = "ADMINISTRADOR";
             button2.UseVisualStyleBackColor = false;
@@ -68,6 +69,7 @@
             Controls.Add(button2);
             Controls.Add(button1);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "MenuCadastro";
             StartPosition = FormStartPosition.CenterScreen;
