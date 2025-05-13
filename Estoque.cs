@@ -1,4 +1,6 @@
-﻿using MySql.Data.MySqlClient;
+﻿using iTextSharp.text.pdf;
+using iTextSharp.text;
+using MySql.Data.MySqlClient;
 using Mysqlx.Crud;
 using PROGETOLOGIN;
 using System;
@@ -20,15 +22,11 @@ namespace ProjetoSGE
         {
             InitializeComponent();
             ListarEstoque();
+            tbtProdutos.CellClick += tbtProdutos_CellClick; // Associa o evento
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
         private void ListarEstoque()
         {
-
             using (var conn = Conexao.Obterconexao())
             {
                 string sqlEstoque = "SELECT * FROM Estoque";
@@ -36,20 +34,32 @@ namespace ProjetoSGE
                 DataTable dt = new DataTable();
                 dataAdapter.Fill(dt);
                 tbtProdutos.DataSource = dt;
+
+                // Verificar validade vencida e aplicar cor vermelha
+                foreach (DataGridViewRow row in tbtProdutos.Rows)
+                {
+                    if (DateTime.TryParse(row.Cells["Validade"].Value?.ToString(), out DateTime validade) && validade < DateTime.Now)
+                    {
+                        row.DefaultCellStyle.BackColor = Color.Red; // Marca a linha com cor vermelha
+                    }
+                    else
+                    {
+                        row.DefaultCellStyle.BackColor = Color.White; // Se não estiver vencido, mantém a cor padrão
+                    }
+                }
             }
         }
 
         private void btnCadastrar_Click(object sender, EventArgs e)
         {
-
             if (string.IsNullOrWhiteSpace(txtProduto.Text) ||
-        string.IsNullOrWhiteSpace(txtQuantidade.Text) ||
-        string.IsNullOrWhiteSpace(txtCategoria.Text) ||
-        string.IsNullOrWhiteSpace(txtValorCompra.Text) ||
-        string.IsNullOrWhiteSpace(txtValorVenda.Text) ||
-        string.IsNullOrWhiteSpace(txtFornecedor.Text) ||
-        string.IsNullOrWhiteSpace(txtDtEntrada.Text) ||
-        string.IsNullOrWhiteSpace(txtDtValidade.Text))
+                string.IsNullOrWhiteSpace(txtQuantidade.Text) ||
+                string.IsNullOrWhiteSpace(txtCategoria.Text) ||
+                string.IsNullOrWhiteSpace(txtValorCompra.Text) ||
+                string.IsNullOrWhiteSpace(txtValorVenda.Text) ||
+                string.IsNullOrWhiteSpace(txtFornecedor.Text) ||
+                string.IsNullOrWhiteSpace(txtDtEntrada.Text) ||
+                string.IsNullOrWhiteSpace(txtDtValidade.Text))
             {
                 MessageBox.Show("Preencha todos os campos antes de continuar.");
                 return;
@@ -118,13 +128,10 @@ namespace ProjetoSGE
             {
                 MessageBox.Show("Erro ao cadastrar produto: " + ex.Message);
             }
-
         }
 
         private void btnAtualizar_Click(object sender, EventArgs e)
         {
-
-
             if (tbtProdutos.CurrentRow == null)
             {
                 MessageBox.Show("Selecione um produto para atualizar.");
@@ -213,9 +220,6 @@ namespace ProjetoSGE
             }
         }
 
-
-
-
         private void btnDeletar_Click(object sender, EventArgs e)
         {
             if (tbtProdutos.CurrentRow != null)
@@ -224,24 +228,101 @@ namespace ProjetoSGE
 
                 using (var conn = Conexao.Obterconexao())
                 {
-
                     string sql = "DELETE FROM estoque WHERE id_produto = @idproduto";
                     var cmd = new MySqlCommand(sql, conn);
                     cmd.Parameters.AddWithValue("@idproduto", id);
                     cmd.ExecuteNonQuery();
-                    MessageBox.Show("Produto excluido com sucesso");
+                    MessageBox.Show("Produto excluído com sucesso.");
                     ListarEstoque();
-
                 }
+            }
+        }
+
+        private void tbtProdutos_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = tbtProdutos.Rows[e.RowIndex];
+
+                txtProduto.Text = row.Cells["Nome_Produto"].Value?.ToString();
+                txtQuantidade.Text = row.Cells["Quantidade"].Value?.ToString();
+                txtCategoria.Text = row.Cells["Categoria"].Value?.ToString();
+                txtValorCompra.Text = row.Cells["Valor_Compra"].Value?.ToString();
+                txtValorVenda.Text = row.Cells["Valor_Venda"].Value?.ToString();
+                txtFornecedor.Text = row.Cells["Fornecedor"].Value?.ToString();
+
+                if (DateTime.TryParse(row.Cells["Data_entrada"].Value?.ToString(), out DateTime dtEntrada))
+                    txtDtEntrada.Text = dtEntrada.ToString("dd/MM/yyyy");
+
+                if (DateTime.TryParse(row.Cells["Validade"].Value?.ToString(), out DateTime dtValidade))
+                    txtDtValidade.Text = dtValidade.ToString("dd/MM/yyyy");
             }
         }
 
         private void BTNVOLTAR_Click(object sender, EventArgs e)
         {
-            fORMSMENU MENU = new fORMSMENU();
-            MENU.Show();
+            fORMSMENU menu = new fORMSMENU();
+            menu.Show();
             this.Hide();
+        }
+
+        private void SalvarPDF_Click(object sender, EventArgs e)
+        {
+            // Criar um diálogo para salvar o PDF
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "PDF Files (*.pdf)|*.pdf";
+            saveFileDialog.Title = "Salvar Relatório em PDF";
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    // Criando o documento PDF
+                    Document doc = new Document();
+                    PdfWriter.GetInstance(doc, new FileStream(saveFileDialog.FileName, FileMode.Create));
+
+                    // Abrir o documento
+                    doc.Open();
+
+                    // Adicionar título ao PDF
+                    doc.Add(new Paragraph("ESTOQUE ATUAL"));
+                    doc.Add(new Paragraph("\n"));
+
+                    // Criar tabela para os dados do DataGridView
+                    PdfPTable table = new PdfPTable(tbtProdutos.Columns.Count);
+
+                    // Adicionar cabeçalhos da tabela
+                    foreach (DataGridViewColumn column in tbtProdutos.Columns)
+                    {
+                        table.AddCell(new Phrase(column.HeaderText));
+                    }
+
+                    // Adicionar dados da DataGridView na tabela
+                    foreach (DataGridViewRow row in tbtProdutos.Rows)
+                    {
+                        foreach (DataGridViewCell cell in row.Cells)
+                        {
+                            table.AddCell(cell.Value?.ToString() ?? string.Empty);
+                        }
+                    }
+
+                    // Adicionar a tabela no documento PDF
+                    doc.Add(table);
+
+                    // Fechar o documento
+                    doc.Close();
+
+                    MessageBox.Show("PDF gerado com sucesso!");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Erro ao salvar o PDF: " + ex.Message);
+                }
+            }
         }
     }
 }
+
+
+
 

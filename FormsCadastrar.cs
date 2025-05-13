@@ -16,6 +16,9 @@ namespace PROGETOLOGIN
         public FormsCadastrar()
         {
             InitializeComponent();
+            CarregarUsuarios(); // Chama a função para carregar os usuários na DataGridView
+            ConfigdtUSUARIO();  // Configura a DataGridView
+            dtUSUARIO.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
         private void btnCadastrar_Click(object sender, EventArgs e)
@@ -23,6 +26,7 @@ namespace PROGETOLOGIN
             string email = txtemail.Text;
             string senha = txtSenha.Text;
             string confirmarSenha = txtCSenha.Text;
+
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(senha))
             {
                 MessageBox.Show("Preencha Todos os Campos");
@@ -30,13 +34,30 @@ namespace PROGETOLOGIN
             }
             if (senha != confirmarSenha)
             {
-                MessageBox.Show("As Senhas não Coicidem");
+                MessageBox.Show("As Senhas não Coincidem");
                 return;
             }
-            string senhaHash = Criptografia.GerarHash(senha);
+
+            // Verifica se o e-mail já está cadastrado no banco de dados antes de inserir
             using (var conexao = Conexao.Obterconexao())
             {
-                string query = "INSERT INTO usuarios(USUARIO,senha) VALUES (@Usuario,@senha)";
+                string query = "SELECT COUNT(*) FROM usuarios WHERE USUARIO = @Usuario";
+                MySqlCommand cmd = new MySqlCommand(query, conexao);
+                cmd.Parameters.AddWithValue("@Usuario", email);
+
+                int count = Convert.ToInt32(cmd.ExecuteScalar());
+                if (count > 0)
+                {
+                    MessageBox.Show("Usuario já cadastrado. Por favor, use outro Usuario.");
+                    return;
+                }
+            }
+
+            string senhaHash = Criptografia.GerarHash(senha);
+
+            using (var conexao = Conexao.Obterconexao())
+            {
+                string query = "INSERT INTO usuarios(USUARIO, senha) VALUES (@Usuario, @senha)";
                 MySqlCommand cmd = new MySqlCommand(query, conexao);
                 cmd.Parameters.AddWithValue("@Usuario", email);
                 cmd.Parameters.AddWithValue("@senha", senhaHash);
@@ -45,21 +66,37 @@ namespace PROGETOLOGIN
                 {
                     cmd.ExecuteNonQuery();
                     MessageBox.Show("Usuário Cadastrado com sucesso");
-                    this.Close();
+                    CarregarUsuarios(); // Recarrega os usuários na DataGridView
                 }
                 catch (MySqlException ex)
                 {
-                    if (ex.Number == 1062)
-                    {
-                        MessageBox.Show("Email já Cadastrado");
-                    }
-                    else
-                    {
-                        MessageBox.Show("Erro ao cadastrar usuario" + ex.Message);
-                    }
+                    MessageBox.Show("Erro ao cadastrar usuário: " + ex.Message);
                 }
             }
+        }
 
+        // Função para carregar os usuários na DataGridView
+        private void CarregarUsuarios()
+        {
+            try
+            {
+                using (var conn = Conexao.Obterconexao())
+                {
+                    string query = "SELECT ID, USUARIO FROM usuarios"; // Seleciona apenas as colunas ID e USUARIO
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+
+                    DataTable tabela = new DataTable();
+                    tabela.Load(reader);
+
+                    // Preenche a DataGridView com os dados
+                    dtUSUARIO.DataSource = tabela;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao carregar usuários: " + ex.Message);
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -67,6 +104,59 @@ namespace PROGETOLOGIN
             LOGIN login = new LOGIN();
             login.Show();
             this.Hide();
+        }
+
+        // Função para configurar a DataGridView
+        private void ConfigdtUSUARIO()
+        {
+            dtUSUARIO.ReadOnly = true;
+            dtUSUARIO.AllowUserToAddRows = false;
+            dtUSUARIO.AllowUserToDeleteRows = false;
+            dtUSUARIO.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dtUSUARIO.MultiSelect = false;
+        }
+
+        private void BtnDeletar_Click(object sender, EventArgs e)
+        {
+            if (dtUSUARIO.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Selecione um usuário para deletar.");
+                return;
+            }
+
+            // Verifica se só existe um usuário cadastrado
+            if (dtUSUARIO.Rows.Count <= 1)
+            {
+                MessageBox.Show("Não é possível deletar o último usuário.");
+                return;
+            }
+
+            // Pega o ID do usuário selecionado
+            int idUsuario = Convert.ToInt32(dtUSUARIO.SelectedRows[0].Cells["ID"].Value);
+
+            DialogResult resultado = MessageBox.Show("Tem certeza que deseja excluir este usuário?",
+                "Confirmação", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (resultado == DialogResult.Yes)
+            {
+                using (var conexao = Conexao.Obterconexao())
+                {
+                    string query = "DELETE FROM usuarios WHERE ID = @id";
+                    MySqlCommand cmd = new MySqlCommand(query, conexao);
+                    cmd.Parameters.AddWithValue("@id", idUsuario);
+
+                    try
+                    {
+                        cmd.ExecuteNonQuery();
+                        MessageBox.Show("Usuário deletado com sucesso!");
+                        CarregarUsuarios(); // Atualiza a lista de usuários
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Erro ao deletar usuário: " + ex.Message);
+                    }
+                }
+            }
         }
     }
 }

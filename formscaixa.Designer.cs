@@ -422,7 +422,7 @@
             MaximizeBox = false;
             Name = "formscaixa";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "formscaixa";
+            Text = "SGE";
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).EndInit();

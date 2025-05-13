@@ -42,7 +42,7 @@
             // 
             // TXTADM
             // 
-            TXTADM.Location = new Point(251, 87);
+            TXTADM.Location = new Point(220, 90);
             TXTADM.Name = "TXTADM";
             TXTADM.Size = new Size(175, 23);
             TXTADM.TabIndex = 0;
@@ -52,7 +52,7 @@
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.ForeColor = Color.FromArgb(255, 128, 0);
-            label1.Location = new Point(184, 154);
+            label1.Location = new Point(162, 154);
             label1.Name = "label1";
             label1.Size = new Size(52, 15);
             label1.TabIndex = 2;
@@ -63,7 +63,7 @@
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label2.ForeColor = Color.FromArgb(255, 128, 0);
-            label2.Location = new Point(128, 90);
+            label2.Location = new Point(97, 90);
             label2.Name = "label2";
             label2.Size = new Size(117, 15);
             label2.TabIndex = 3;
@@ -73,7 +73,7 @@
             // 
             BTNAcessar.BackColor = Color.FromArgb(255, 128, 0);
             BTNAcessar.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            BTNAcessar.Location = new Point(272, 212);
+            BTNAcessar.Location = new Point(238, 205);
             BTNAcessar.Name = "BTNAcessar";
             BTNAcessar.Size = new Size(128, 23);
             BTNAcessar.TabIndex = 4;
@@ -113,7 +113,7 @@
             // 
             // TXTSENHA
             // 
-            TXTSENHA.Location = new Point(251, 151);
+            TXTSENHA.Location = new Point(220, 151);
             TXTSENHA.Name = "TXTSENHA";
             TXTSENHA.Size = new Size(175, 23);
             TXTSENHA.TabIndex = 1;
@@ -122,7 +122,7 @@
             // 
             btnmostra.BackColor = Color.FromArgb(255, 128, 0);
             btnmostra.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnmostra.Location = new Point(446, 151);
+            btnmostra.Location = new Point(422, 154);
             btnmostra.Name = "btnmostra";
             btnmostra.Size = new Size(96, 23);
             btnmostra.TabIndex = 8;
@@ -143,6 +143,7 @@
             // 
             // ADM
             // 
+            AcceptButton = BTNAcessar;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaptionText;
@@ -161,7 +162,7 @@
             MaximizeBox = false;
             Name = "ADM";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "ADM";
+            Text = "SGE";
             ResumeLayout(false);
             PerformLayout();
         }

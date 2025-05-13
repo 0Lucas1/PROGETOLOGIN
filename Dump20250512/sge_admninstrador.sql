@@ -23,12 +23,13 @@ DROP TABLE IF EXISTS `admninstrador`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `admninstrador` (
-  `ID` int NOT NULL AUTO_INCREMENT,
+  `ID_adm` int NOT NULL AUTO_INCREMENT,
   `USUARIO` varchar(20) NOT NULL,
   `SENHA` varchar(100) NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE KEY `USUARIO` (`USUARIO`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`ID_adm`),
+  UNIQUE KEY `USUARIO` (`USUARIO`),
+  UNIQUE KEY `USUARIO_2` (`USUARIO`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -37,7 +38,7 @@ CREATE TABLE `admninstrador` (
 
 LOCK TABLES `admninstrador` WRITE;
 /*!40000 ALTER TABLE `admninstrador` DISABLE KEYS */;
-INSERT INTO `admninstrador` VALUES (1,'L','6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b');
+INSERT INTO `admninstrador` VALUES (4,'adm','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3');
 /*!40000 ALTER TABLE `admninstrador` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -50,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-05 20:05:42
+-- Dump completed on 2025-05-12 22:28:31

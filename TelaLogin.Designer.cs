@@ -39,7 +39,7 @@
             // 
             // TXTEMAIL
             // 
-            TXTEMAIL.Location = new Point(283, 129);
+            TXTEMAIL.Location = new Point(283, 130);
             TXTEMAIL.Name = "TXTEMAIL";
             TXTEMAIL.Size = new Size(211, 23);
             TXTEMAIL.TabIndex = 2;
@@ -111,6 +111,7 @@
             // 
             // LOGIN
             // 
+            AcceptButton = BTNACESSAR;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Black;

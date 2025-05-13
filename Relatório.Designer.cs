@@ -31,7 +31,12 @@
             dataGridViewRelatorio = new DataGridView();
             label1 = new Label();
             BTNsalvar = new Button();
-            dateTimePicker1 = new DateTimePicker();
+            dtFIM = new DateTimePicker();
+            mySqlCommand1 = new MySql.Data.MySqlClient.MySqlCommand();
+            dtInicio = new DateTimePicker();
+            btnFiltrar = new Button();
+            label2 = new Label();
+            label3 = new Label();
             ((System.ComponentModel.ISupportInitialize)dataGridViewRelatorio).BeginInit();
             SuspendLayout();
             // 
@@ -62,20 +67,69 @@
             BTNsalvar.TabIndex = 2;
             BTNsalvar.Text = "SALVAR";
             BTNsalvar.UseVisualStyleBackColor = true;
+            BTNsalvar.Click += BTNsalvar_Click;
             // 
-            // dateTimePicker1
+            // dtFIM
             // 
-            dateTimePicker1.Location = new Point(687, 290);
-            dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(200, 23);
-            dateTimePicker1.TabIndex = 3;
+            dtFIM.Location = new Point(651, 352);
+            dtFIM.Name = "dtFIM";
+            dtFIM.Size = new Size(200, 23);
+            dtFIM.TabIndex = 3;
+            // 
+            // mySqlCommand1
+            // 
+            mySqlCommand1.CacheAge = 0;
+            mySqlCommand1.Connection = null;
+            mySqlCommand1.EnableCaching = false;
+            mySqlCommand1.Transaction = null;
+            // 
+            // dtInicio
+            // 
+            dtInicio.Location = new Point(408, 352);
+            dtInicio.Name = "dtInicio";
+            dtInicio.Size = new Size(200, 23);
+            dtInicio.TabIndex = 4;
+            // 
+            // btnFiltrar
+            // 
+            btnFiltrar.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnFiltrar.Location = new Point(531, 411);
+            btnFiltrar.Name = "btnFiltrar";
+            btnFiltrar.Size = new Size(179, 33);
+            btnFiltrar.TabIndex = 5;
+            btnFiltrar.Text = "FILTRAR";
+            btnFiltrar.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label2.Location = new Point(712, 306);
+            label2.Name = "label2";
+            label2.Size = new Size(83, 21);
+            label2.TabIndex = 6;
+            label2.Text = "DATA FIM";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label3.Location = new Point(461, 306);
+            label3.Name = "label3";
+            label3.Size = new Size(105, 21);
+            label3.TabIndex = 7;
+            label3.Text = "DATA INICIO";
             // 
             // Relatório
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(886, 432);
-            Controls.Add(dateTimePicker1);
+            ClientSize = new Size(886, 506);
+            Controls.Add(label3);
+            Controls.Add(label2);
+            Controls.Add(btnFiltrar);
+            Controls.Add(dtInicio);
+            Controls.Add(dtFIM);
             Controls.Add(BTNsalvar);
             Controls.Add(label1);
             Controls.Add(dataGridViewRelatorio);
@@ -94,6 +148,11 @@
         private DataGridView dataGridViewRelatorio;
         private Label label1;
         private Button BTNsalvar;
-        private DateTimePicker dateTimePicker1;
+        private DateTimePicker dtFIM;
+        private MySql.Data.MySqlClient.MySqlCommand mySqlCommand1;
+        private DateTimePicker dtInicio;
+        private Button btnFiltrar;
+        private Label label2;
+        private Label label3;
     }
 }

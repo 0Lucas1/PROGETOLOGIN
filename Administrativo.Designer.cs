@@ -122,6 +122,7 @@
             // 
             // Administrativo
             // 
+            AcceptButton = BTNAcessar;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaptionText;
@@ -138,7 +139,7 @@
             MaximizeBox = false;
             Name = "Administrativo";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "ADMINISTRATIVO";
+            Text = "SGE";
             ResumeLayout(false);
             PerformLayout();
         }

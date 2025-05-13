@@ -71,7 +71,7 @@
             MaximizeBox = false;
             Name = "MenuCadastro";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "MenuCadastro";
+            Text = "Menu Cadastro";
             ResumeLayout(false);
         }
 

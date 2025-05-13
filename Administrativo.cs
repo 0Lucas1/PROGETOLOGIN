@@ -55,7 +55,7 @@ namespace ProjetoSGE
             if (senhaVisivel)
             {
                 textBox1.PasswordChar = '*';
-                btnmostra.Text = "Mostrar";
+                btnmostra.Text = " 👁️";
                 senhaVisivel = false;
             }
             else

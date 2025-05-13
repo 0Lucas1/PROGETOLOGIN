@@ -33,7 +33,7 @@ CREATE TABLE `estoque` (
   `Data_entrada` date DEFAULT NULL,
   `Validade` date DEFAULT NULL,
   PRIMARY KEY (`ID_Produto`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,6 +42,7 @@ CREATE TABLE `estoque` (
 
 LOCK TABLES `estoque` WRITE;
 /*!40000 ALTER TABLE `estoque` DISABLE KEYS */;
+INSERT INTO `estoque` VALUES (9,97,'Arroz','Alimento',10.00,20.00,'Amil','2024-11-10','2026-01-10'),(10,91,'Macarrao','Alimento',4.50,7.00,'Adria','2024-11-10','2026-01-10'),(11,98,'Café','Alimento',20.00,40.00,'Pilão','2024-11-10','2026-01-10'),(12,99,'Feijão','Alimento',15.00,25.00,'Pantera','2024-11-10','2026-01-10'),(13,99,'Detergente','Limpeza',2.00,4.00,'Ype','2024-11-10','2026-01-10'),(14,99,'Sabão em pó','Limpeza',10.00,20.00,'OMO','2024-11-10','2026-01-10'),(15,99,'Agua Sanitária','Limpeza',6.00,10.00,'Candida','2024-11-10','2026-01-10'),(16,99,'Desinfetante','Limpeza',4.00,8.00,'Ype','2024-11-10','2026-01-10'),(17,98,'Papel Higienico','Higiene',10.00,18.00,'Personal','2024-11-10','2026-01-10'),(18,100,'Sabonete','Higiene',1.50,3.00,'Dove','2024-11-10','2026-01-10'),(19,100,'Shampoo','Higiene',8.00,13.00,'Loreal','2024-11-10','2026-01-10'),(20,100,'Condicionador','Higiene',7.00,12.00,'Loreal','2024-11-10','2026-01-10');
 /*!40000 ALTER TABLE `estoque` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -54,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-05 20:05:42
+-- Dump completed on 2025-05-12 22:28:31

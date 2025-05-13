@@ -37,16 +37,19 @@
             txtemail = new TextBox();
             btnCadastrar = new Button();
             button1 = new Button();
+            dtAdm = new DataGridView();
+            button2 = new Button();
+            ((System.ComponentModel.ISupportInitialize)dtAdm).BeginInit();
             SuspendLayout();
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label4.Font = new Font("Segoe UI", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             label4.ForeColor = Color.FromArgb(255, 128, 0);
-            label4.Location = new Point(308, 76);
+            label4.Location = new Point(328, 55);
             label4.Name = "label4";
-            label4.Size = new Size(232, 21);
+            label4.Size = new Size(231, 21);
             label4.TabIndex = 8;
             label4.Text = "CADASTRO ADMINISTRADOR";
             // 
@@ -88,7 +91,7 @@
             txtCSenha.Location = new Point(246, 297);
             txtCSenha.Name = "txtCSenha";
             txtCSenha.PasswordChar = '*';
-            txtCSenha.Size = new Size(382, 23);
+            txtCSenha.Size = new Size(176, 23);
             txtCSenha.TabIndex = 14;
             // 
             // txtSenha
@@ -96,14 +99,14 @@
             txtSenha.Location = new Point(246, 216);
             txtSenha.Name = "txtSenha";
             txtSenha.PasswordChar = '*';
-            txtSenha.Size = new Size(382, 23);
+            txtSenha.Size = new Size(176, 23);
             txtSenha.TabIndex = 13;
             // 
             // txtemail
             // 
             txtemail.Location = new Point(246, 137);
             txtemail.Name = "txtemail";
-            txtemail.Size = new Size(382, 23);
+            txtemail.Size = new Size(176, 23);
             txtemail.TabIndex = 12;
             // 
             // btnCadastrar
@@ -112,7 +115,7 @@
             btnCadastrar.Cursor = Cursors.Hand;
             btnCadastrar.Font = new Font("Showcard Gothic", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnCadastrar.ForeColor = Color.Black;
-            btnCadastrar.Location = new Point(302, 356);
+            btnCadastrar.Location = new Point(215, 377);
             btnCadastrar.Name = "btnCadastrar";
             btnCadastrar.Size = new Size(238, 36);
             btnCadastrar.TabIndex = 15;
@@ -131,12 +134,36 @@
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
+            // dtAdm
+            // 
+            dtAdm.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dtAdm.Location = new Point(452, 137);
+            dtAdm.Name = "dtAdm";
+            dtAdm.Size = new Size(336, 179);
+            dtAdm.TabIndex = 17;
+            // 
+            // button2
+            // 
+            button2.BackColor = Color.FromArgb(255, 128, 0);
+            button2.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button2.ForeColor = SystemColors.ActiveCaptionText;
+            button2.Location = new Point(548, 348);
+            button2.Name = "button2";
+            button2.Size = new Size(156, 30);
+            button2.TabIndex = 18;
+            button2.Text = "DELETAR";
+            button2.UseVisualStyleBackColor = false;
+            button2.Click += button2_Click;
+            // 
             // CadastroAdministrador
             // 
+            AcceptButton = btnCadastrar;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaptionText;
             ClientSize = new Size(800, 450);
+            Controls.Add(button2);
+            Controls.Add(dtAdm);
             Controls.Add(button1);
             Controls.Add(btnCadastrar);
             Controls.Add(txtCSenha);
@@ -150,7 +177,8 @@
             MinimizeBox = false;
             Name = "CadastroAdministrador";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "CadastroAdministrador";
+            Text = "SGE";
+            ((System.ComponentModel.ISupportInitialize)dtAdm).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -166,5 +194,7 @@
         private TextBox txtemail;
         private Button btnCadastrar;
         private Button button1;
+        private DataGridView dtAdm;
+        private Button button2;
     }
 }

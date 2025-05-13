@@ -51,6 +51,7 @@
             pictureBox1 = new PictureBox();
             pictureBox2 = new PictureBox();
             BTNVOLTAR = new Button();
+            SalvarPDF = new Button();
             ((System.ComponentModel.ISupportInitialize)tbtProdutos).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
@@ -215,7 +216,6 @@
             tbtProdutos.Name = "tbtProdutos";
             tbtProdutos.Size = new Size(833, 256);
             tbtProdutos.TabIndex = 33;
-            tbtProdutos.CellContentClick += dataGridView1_CellContentClick;
             // 
             // btnAtualizar
             // 
@@ -264,7 +264,7 @@
             // 
             // pictureBox2
             // 
-            pictureBox2.Location = new Point(12, 10);
+            pictureBox2.Location = new Point(12, 12);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(885, 593);
             pictureBox2.TabIndex = 39;
@@ -282,12 +282,23 @@
             BTNVOLTAR.UseVisualStyleBackColor = true;
             BTNVOLTAR.Click += BTNVOLTAR_Click;
             // 
+            // SalvarPDF
+            // 
+            SalvarPDF.Location = new Point(691, 569);
+            SalvarPDF.Name = "SalvarPDF";
+            SalvarPDF.Size = new Size(173, 23);
+            SalvarPDF.TabIndex = 41;
+            SalvarPDF.Text = "SALVAR EM PDF";
+            SalvarPDF.UseVisualStyleBackColor = true;
+            SalvarPDF.Click += SalvarPDF_Click;
+            // 
             // Estoque
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Black;
             ClientSize = new Size(909, 615);
+            Controls.Add(SalvarPDF);
             Controls.Add(BTNVOLTAR);
             Controls.Add(btnDeletar);
             Controls.Add(btnCadastrar);
@@ -348,5 +359,6 @@
         private PictureBox pictureBox1;
         private PictureBox pictureBox2;
         private Button BTNVOLTAR;
+        private Button SalvarPDF;
     }
 }

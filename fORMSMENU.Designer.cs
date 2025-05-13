@@ -71,7 +71,7 @@
             MaximizeBox = false;
             Name = "fORMSMENU";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "fORMSMENU";
+            Text = "SGE";
             ResumeLayout(false);
         }
 

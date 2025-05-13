@@ -40,8 +40,8 @@ namespace PROGETOLOGIN
             {
                 using (var conexao = Conexao.Obterconexao())
                 {
-                    // Query que busca o usuário na tabela 'usuarios' com a senha correta
-                    string query = "SELECT * FROM usuarios WHERE USUARIO = @USUARIO AND senha = @senha";
+                    // ⚠️ ALTERAÇÃO AQUI: adicionando COLLATE utf8mb4_bin para comparação case-sensitive
+                    string query = "SELECT * FROM usuarios WHERE USUARIO COLLATE utf8mb4_bin = @USUARIO AND senha = @senha";
                     MySqlCommand cmd = new MySqlCommand(query, conexao);
                     cmd.Parameters.AddWithValue("@USUARIO", usuario);
                     cmd.Parameters.AddWithValue("@senha", senhahash);
