@@ -58,24 +58,25 @@ namespace PROGETOLOGIN
                 {
                     // Ajusta as datas de início e fim para garantir que pegaremos o intervalo completo
                     string query = @"
-                SELECT 
-                    v.ID_Venda,
-                    e.Nome_Produto,
-                    v.Quantidade,
-                    v.Valor_Total,
-                    v.Data_Venda,
-                    u.Usuario AS Nome_Usuario
-                FROM 
-                    vendas v
-                JOIN 
-                    Estoque e ON v.ID_Produto = e.ID_Produto
-                JOIN 
-                    Usuarios u ON v.ID_Usuario = u.ID
-                WHERE 
-                    v.Data_Venda >= @inicio 
-                    AND v.Data_Venda <= @fim
-                ORDER BY 
-                    v.Data_Venda"; // Ordena para mostrar de forma cronológica
+        SELECT 
+            v.ID_Venda,
+            e.Nome_Produto,
+            v.Quantidade,
+            v.Valor_Total,
+            v.Data_Venda,
+            u.Usuario AS Nome_Usuario,
+            e.Fornecedor  -- Adiciona o campo Fornecedor à consulta
+        FROM 
+            vendas v
+        JOIN 
+            Estoque e ON v.ID_Produto = e.ID_Produto
+        JOIN 
+            Usuarios u ON v.ID_Usuario = u.ID
+        WHERE 
+            v.Data_Venda >= @inicio 
+            AND v.Data_Venda <= @fim
+        ORDER BY 
+            v.Data_Venda"; // Ordena para mostrar de forma cronológica
 
                     MySqlCommand cmd = new MySqlCommand(query, conn);
 
