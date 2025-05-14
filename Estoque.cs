@@ -22,6 +22,7 @@ namespace ProjetoSGE
         {
             InitializeComponent();
             ListarEstoque();
+            ExibirAvisoEstoqueBaixo();
             tbtProdutos.CellClick += tbtProdutos_CellClick; // Associa o evento
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Encerramento);
         }
@@ -47,6 +48,38 @@ namespace ProjetoSGE
                     {
                         row.DefaultCellStyle.BackColor = Color.White; // Se não estiver vencido, mantém a cor padrão
                     }
+                }
+            }
+        }
+        private void ExibirAvisoEstoqueBaixo()
+        {
+            using (var conn = Conexao.Obterconexao())
+            {
+                string sqlEstoque = "SELECT * FROM Estoque";
+                MySqlDataAdapter dataAdapter = new MySqlDataAdapter(sqlEstoque, conn);
+                DataTable dt = new DataTable();
+                dataAdapter.Fill(dt);
+
+                List<string> produtosComEstoqueBaixo = new List<string>();
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    int quantidade = Convert.ToInt32(row["Quantidade"]);
+                    string nomeProduto = row["Nome_Produto"].ToString();
+                    string fornecedor = row["Fornecedor"].ToString();
+
+                    // Verifica se a quantidade é menor ou igual a 10
+                    if (quantidade <= 10)
+                    {
+                        produtosComEstoqueBaixo.Add($"Produto: {nomeProduto}, Fornecedor: {fornecedor}, Quantidade Atual: {quantidade}");
+                    }
+                }
+
+                // Se houver produtos com estoque baixo, exibe uma MessageBox
+                if (produtosComEstoqueBaixo.Count > 0)
+                {
+                    string mensagem = string.Join("\n", produtosComEstoqueBaixo);
+                    MessageBox.Show(mensagem, "Aviso de Estoque Baixo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
         }
